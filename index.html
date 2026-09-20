@@ -3,32 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VMcraft — лаунчер Minecraft: Java Edition для Android</title>
-  <meta name="description" content="VMcraft — лаунчер Minecraft: Java Edition для Android. Скачивайте версии, ставьте моды и модпаки, настраивайте управление и запускайте игру на телефоне или планшете.">
+  <title>VMcraft — лаунчер Minecraft Java Edition для Android</title>
+  <meta name="description" content="Скачайте VMcraft: лаунчер Minecraft: Java Edition на Android. Версии, моды, модпаки, серверы и сенсорное управление.">
+  <link rel="canonical" href="https://vmcraft.mineholde.pro/">
   <meta name="theme-color" content="#0A0A0E">
-  <meta property="og:title" content="VMcraft">
-  <meta property="og:description" content="Лаунчер Minecraft: Java Edition для Android.">
-  <meta property="og:image" content="images/icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VMcraft">
+  <meta property="og:title" content="VMcraft — лаунчер Minecraft Java Edition для Android">
+  <meta property="og:description" content="Minecraft: Java Edition на Android. Моды, серверы, версии и скачать APK.">
+  <meta property="og:url" content="https://vmcraft.mineholde.pro/">
+  <meta property="og:image" content="https://vmcraft.mineholde.pro/images/icon.png">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" href="images/icon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/icon-round.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260920d">
+  <link rel="stylesheet" href="css/style.css?v=20260920e">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"VMcraft","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://vmcraft.mineholde.pro/","description":"Minecraft: Java Edition launcher for Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
 </head>
-<body>
+<body data-page="home">
   <div class="bedrock" aria-hidden="true"></div>
   <header class="nav">
     <div class="wrap nav-inner">
-      <a class="brand" href="#top">
+      <a class="brand" href="index.html">
         <img src="images/icon.png" alt="VMcraft">
         VMcraft
       </a>
       <nav class="nav-links">
         <a class="hide-sm" href="#features" data-i18n="navFeat">Возможности</a>
-        <a class="hide-sm" href="#mods" data-i18n="navMods">Моды</a>
-        <a href="versions.html" data-i18n="navVersions">Версии</a>
-        <a class="hide-sm" href="#download" data-i18n="navDl">Скачать</a>
+        <a data-nav="mods" href="mods.html" data-i18n="navMods">Моды</a>
+        <a data-nav="servers" href="servers.html" data-i18n="navServers">Серверы</a>
+        <a data-nav="versions" href="versions.html" data-i18n="navVersions">Версии</a>
         <button class="lang" type="button" id="langBtn">EN</button>
         <a class="btn btn-play" data-apk href="https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk" data-i18n="play">Скачать APK</a>
       </nav>
@@ -134,6 +142,7 @@
         <div class="eco"><img src="images/fabric.webp" alt="Fabric"><span>Fabric</span></div>
         <div class="eco"><img src="images/quilt.webp" alt="Quilt"><span>Quilt</span></div>
       </div>
+      <p class="section-link"><a class="btn btn-ghost" href="mods.html" data-i18n="ecoMore">Каталог модов</a></p>
     </section>
 
     <section class="wrap section" id="start">
@@ -184,10 +193,18 @@
 
   <footer>
     <div class="wrap foot">
-      <div class="legal" data-i18n="legal">VMcraft — независимый проект. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.</div>
+      <div>
+        <div class="foot-nav">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="mods.html" data-i18n="navMods">Моды</a>
+          <a href="servers.html" data-i18n="navServers">Серверы</a>
+          <a href="versions.html" data-i18n="navVersions">Версии</a>
+        </div>
+        <div class="legal" data-i18n="legal">VMcraft — независимый проект. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.</div>
+      </div>
       <div data-i18n="copy">© VMcraft · VMRcompany</div>
     </div>
   </footer>
-  <script src="js/app.js?v=20260920c"></script>
+  <script src="js/app.js?v=20260920e"></script>
 </body>
 </html>

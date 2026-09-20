@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Моды для VMcraft — Fabric, Forge, Modrinth, CurseForge</title>
+  <meta name="description" content="Как ставить моды и модпаки в VMcraft на Android: Modrinth, CurseForge, Fabric, Quilt, Forge, NeoForge и .mrpack.">
+  <link rel="canonical" href="https://vmcraft.mineholde.pro/mods.html">
+  <meta name="theme-color" content="#0A0A0E">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VMcraft">
+  <meta property="og:title" content="Моды для VMcraft">
+  <meta property="og:description" content="Modrinth, CurseForge, Fabric, Quilt, Forge и модпаки в лаунчере VMcraft.">
+  <meta property="og:url" content="https://vmcraft.mineholde.pro/mods.html">
+  <meta property="og:image" content="https://vmcraft.mineholde.pro/images/icon.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20260920e">
+</head>
+<body data-page="mods">
+  <div class="bedrock" aria-hidden="true"></div>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="index.html"><img src="images/icon.png" alt="VMcraft"> VMcraft</a>
+      <nav class="nav-links">
+        <a data-nav="mods" href="mods.html" data-i18n="navMods">Моды</a>
+        <a data-nav="servers" href="servers.html" data-i18n="navServers">Серверы</a>
+        <a data-nav="versions" href="versions.html" data-i18n="navVersions">Версии</a>
+        <button class="lang" type="button" id="langBtn">EN</button>
+        <a class="btn btn-play" data-apk href="https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk" data-i18n="play">Скачать APK</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap section versions-page">
+    <h1 data-i18n="modsTitle">Моды и модпаки</h1>
+    <p class="sub" data-i18n="modsSub">Ставьте моды из Modrinth и CurseForge прямо в VMcraft: Fabric, Quilt, Forge, NeoForge и .mrpack-сборки.</p>
+    <div class="ecosystem">
+      <div class="eco"><img src="images/modrinth.png" alt="Modrinth"><span>Modrinth</span></div>
+      <div class="eco"><img src="images/curseforge.png" alt="CurseForge"><span>CurseForge</span></div>
+      <div class="eco"><img src="images/fabric.webp" alt="Fabric"><span>Fabric</span></div>
+      <div class="eco"><img src="images/quilt.webp" alt="Quilt"><span>Quilt</span></div>
+    </div>
+    <div class="toolbar">
+      <input id="modQuery" class="search" type="search" autocomplete="off" data-i18n-placeholder="modsSearch" placeholder="Найти мод…">
+      <div class="chips">
+        <button type="button" class="chip is-on" data-type="mod" data-i18n="modsTypeMod">Моды</button>
+        <button type="button" class="chip" data-type="modpack" data-i18n="modsTypePack">Модпаки</button>
+      </div>
+    </div>
+    <div id="modGrid" class="mod-grid"></div>
+    <h2 data-i18n="modsHowTitle">Как поставить мод в VMcraft</h2>
+    <div class="steps">
+      <article class="step">
+        <div class="num">1</div>
+        <h3 data-i18n="modsH1t">Откройте поиск модов</h3>
+        <p data-i18n="modsH1d">В лаунчере найдите Modrinth или CurseForge и введите название.</p>
+      </article>
+      <article class="step">
+        <div class="num">2</div>
+        <h3 data-i18n="modsH2t">Выберите загрузчик</h3>
+        <p data-i18n="modsH2d">Создайте профиль Fabric, Quilt, Forge или NeoForge под нужную версию игры.</p>
+      </article>
+      <article class="step">
+        <div class="num">3</div>
+        <h3 data-i18n="modsH3t">Или поставьте сборку</h3>
+        <p data-i18n="modsH3d">Импортируйте .mrpack или zip — VMcraft сам скачает моды и создаст профиль.</p>
+      </article>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>
+        <div class="foot-nav">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="mods.html" data-i18n="navMods">Моды</a>
+          <a href="servers.html" data-i18n="navServers">Серверы</a>
+          <a href="versions.html" data-i18n="navVersions">Версии</a>
+        </div>
+        <div class="legal" data-i18n="legal">VMcraft — независимый проект. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.</div>
+      </div>
+      <div data-i18n="copy">© VMcraft · VMRcompany</div>
+    </div>
+  </footer>
+  <script src="js/app.js?v=20260920e"></script>
+  <script src="js/mods.js?v=20260920e"></script>
+</body>
+</html>

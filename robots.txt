@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vmcraft.mineholde.pro/sitemap.xml

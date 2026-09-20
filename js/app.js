@@ -8,7 +8,9 @@ const FALLBACK = {
 const I18N = {
   ru: {
     navFeat: "Возможности",
+    navHome: "Главная",
     navMods: "Моды",
+    navServers: "Серверы",
     navDl: "Скачать",
     navVersions: "Версии",
     lang: "EN",
@@ -42,6 +44,7 @@ const I18N = {
     f9t: "Темы оформления",
     f9d: "Тёмная оболочка лаунчера и набор цветовых пресетов.",
     ecoTitle: "Моды, которые вы уже знаете",
+    ecoMore: "Каталог модов",
     howTitle: "Как начать",
     s1t: "Установите APK",
     s1d: "Скачайте свежий релиз и разрешите установку из этого источника.",
@@ -56,6 +59,34 @@ const I18N = {
     verLatest: "Актуальная",
     verEmpty: "Пока нет опубликованных версий.",
     verError: "Не удалось загрузить список версий. Попробуйте обновить страницу.",
+    modsTitle: "Моды и модпаки",
+    modsSub: "Ставьте моды из Modrinth и CurseForge прямо в VMcraft: Fabric, Quilt, Forge, NeoForge и .mrpack-сборки.",
+    modsSearch: "Найти мод…",
+    modsTypeMod: "Моды",
+    modsTypePack: "Модпаки",
+    modsOpen: "На Modrinth",
+    modsEmpty: "Ничего не найдено. Попробуйте другой запрос.",
+    modsErr: "Не удалось загрузить каталог. Откройте поиск модов в самом лаунчере.",
+    modsHowTitle: "Как поставить мод в VMcraft",
+    modsH1t: "Откройте поиск модов",
+    modsH1d: "В лаунчере найдите Modrinth или CurseForge и введите название.",
+    modsH2t: "Выберите загрузчик",
+    modsH2d: "Создайте профиль Fabric, Quilt, Forge или NeoForge под нужную версию игры.",
+    modsH3t: "Или поставьте сборку",
+    modsH3d: "Импортируйте .mrpack или zip — VMcraft сам скачает моды и создаст профиль.",
+    srvTitle: "Серверы Java Edition",
+    srvSub: "VMcraft запускает Minecraft: Java Edition, поэтому вы заходите на те же серверы, что и с компьютера.",
+    srvHow: "Как зайти",
+    srvS1t: "Войдите в аккаунт",
+    srvS1d: "Для серверов с online-mode нужен вход через Microsoft.",
+    srvS2t: "Поставьте ту же версию",
+    srvS2d: "Версия (и моды, если сервер модовый) должна совпадать с сервером.",
+    srvS3t: "Добавьте адрес",
+    srvS3d: "В игре: Мультиплеер → Добавить сервер → IP и порт.",
+    srvList: "Список серверов",
+    srvEmpty: "Пока нет опубликованных серверов. Заходите на любой Java-сервер через мультиплеер в игре.",
+    srvCopy: "Копировать IP",
+    srvCopied: "Скопировано",
     ytTitle: "Наш YouTube канал",
     ytSub: "Гайды, сборки и новости лаунчера — на канале @Воваааанчик.",
     ytBtn: "Открыть YouTube",
@@ -64,7 +95,9 @@ const I18N = {
   },
   en: {
     navFeat: "Features",
+    navHome: "Home",
     navMods: "Mods",
+    navServers: "Servers",
     navDl: "Download",
     navVersions: "Versions",
     lang: "RU",
@@ -98,6 +131,7 @@ const I18N = {
     f9t: "Themes",
     f9d: "Dark launcher chrome plus color presets.",
     ecoTitle: "Loaders you already know",
+    ecoMore: "Mods catalog",
     howTitle: "How to start",
     s1t: "Install the APK",
     s1d: "Grab the latest release and allow installs from this source.",
@@ -112,6 +146,34 @@ const I18N = {
     verLatest: "Latest",
     verEmpty: "No published versions yet.",
     verError: "Could not load the version list. Refresh the page and try again.",
+    modsTitle: "Mods and modpacks",
+    modsSub: "Install mods from Modrinth and CurseForge inside VMcraft: Fabric, Quilt, Forge, NeoForge, and .mrpack packs.",
+    modsSearch: "Search mods…",
+    modsTypeMod: "Mods",
+    modsTypePack: "Modpacks",
+    modsOpen: "On Modrinth",
+    modsEmpty: "Nothing found. Try another query.",
+    modsErr: "Could not load the catalog. Search for mods inside the launcher.",
+    modsHowTitle: "How to install a mod in VMcraft",
+    modsH1t: "Open mod search",
+    modsH1d: "In the launcher, open Modrinth or CurseForge and type a name.",
+    modsH2t: "Pick a loader",
+    modsH2d: "Create a Fabric, Quilt, Forge, or NeoForge profile for your game version.",
+    modsH3t: "Or import a pack",
+    modsH3d: "Import a .mrpack or zip — VMcraft downloads the mods and creates a profile.",
+    srvTitle: "Java Edition servers",
+    srvSub: "VMcraft runs Minecraft: Java Edition, so you join the same servers as on a PC.",
+    srvHow: "How to join",
+    srvS1t: "Sign in",
+    srvS1d: "Online-mode servers need a Microsoft account login.",
+    srvS2t: "Match the version",
+    srvS2d: "Use the same game version (and mods, if the server is modded).",
+    srvS3t: "Add the address",
+    srvS3d: "In game: Multiplayer → Add server → IP and port.",
+    srvList: "Server list",
+    srvEmpty: "No featured servers yet. You can still join any Java server from the in-game multiplayer menu.",
+    srvCopy: "Copy IP",
+    srvCopied: "Copied",
     ytTitle: "Our YouTube channel",
     ytSub: "Guides, packs, and launcher news on @Воваааанчик.",
     ytBtn: "Open YouTube",
@@ -123,6 +185,45 @@ const I18N = {
 const savedLang = localStorage.getItem("vmcraft-lang");
 let lang = savedLang === "en" || savedLang === "ru" ? savedLang : "ru";
 
+const SEO = {
+  home: {
+    ru: { title: "VMcraft — лаунчер Minecraft Java Edition для Android", desc: "Скачайте VMcraft: лаунчер Minecraft: Java Edition на Android. Версии, моды, модпаки, серверы и сенсорное управление." },
+    en: { title: "VMcraft — Minecraft Java Edition launcher for Android", desc: "Download VMcraft, a Minecraft: Java Edition launcher for Android. Versions, mods, modpacks, servers, and touch controls." }
+  },
+  mods: {
+    ru: { title: "Моды для VMcraft — Fabric, Forge, Modrinth, CurseForge", desc: "Как ставить моды и модпаки в VMcraft на Android: Modrinth, CurseForge, Fabric, Quilt, Forge, NeoForge и .mrpack." },
+    en: { title: "VMcraft mods — Fabric, Forge, Modrinth, CurseForge", desc: "Install mods and modpacks in VMcraft on Android via Modrinth, CurseForge, Fabric, Quilt, Forge, NeoForge, and .mrpack." }
+  },
+  servers: {
+    ru: { title: "Серверы Minecraft Java в VMcraft", desc: "Заходите на серверы Minecraft: Java Edition с телефона через лаунчер VMcraft. Та же версия, Microsoft-аккаунт, IP сервера." },
+    en: { title: "Minecraft Java servers in VMcraft", desc: "Join Minecraft: Java Edition servers from your phone with the VMcraft launcher. Matching version, Microsoft account, server IP." }
+  },
+  versions: {
+    ru: { title: "Скачать VMcraft — все версии APK", desc: "Все версии лаунчера VMcraft для Android. Скачайте актуальную или предыдущую сборку APK." },
+    en: { title: "Download VMcraft — all APK versions", desc: "Every VMcraft Android launcher release. Download the latest or an older APK build." }
+  }
+};
+
+function applySeo() {
+  const page = document.body.dataset.page || "home";
+  const pack = SEO[page] && SEO[page][lang];
+  if (!pack) return;
+  document.title = pack.title;
+  const desc = document.querySelector('meta[name="description"]');
+  if (desc) desc.setAttribute("content", pack.desc);
+  const ogt = document.querySelector('meta[property="og:title"]');
+  if (ogt) ogt.setAttribute("content", pack.title);
+  const ogd = document.querySelector('meta[property="og:description"]');
+  if (ogd) ogd.setAttribute("content", pack.desc);
+}
+
+function markActiveNav() {
+  const page = document.body.dataset.page || "home";
+  document.querySelectorAll(".nav-links a[data-nav]").forEach((a) => {
+    a.classList.toggle("is-active", a.getAttribute("data-nav") === page);
+  });
+}
+
 function applyLang() {
   const t = I18N[lang];
   document.documentElement.lang = lang;
@@ -132,15 +233,15 @@ function applyLang() {
   });
   const langBtn = document.getElementById("langBtn");
   if (langBtn) langBtn.textContent = t.lang;
-  const onVersions = document.body.dataset.page === "versions";
-  if (onVersions) {
-    document.title = lang === "ru" ? "Версии VMcraft" : "VMcraft versions";
-  } else {
-    document.title = lang === "ru"
-      ? "VMcraft — лаунчер Minecraft: Java Edition для Android"
-      : "VMcraft — Minecraft: Java Edition launcher for Android";
-  }
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (t[key]) el.setAttribute("placeholder", t[key]);
+  });
+  applySeo();
+  markActiveNav();
   if (typeof window.renderVersions === "function") window.renderVersions();
+  if (typeof window.renderServers === "function") window.renderServers();
+  if (typeof window.renderModCards === "function") window.renderModCards();
 }
 
 const langBtnEl = document.getElementById("langBtn");
