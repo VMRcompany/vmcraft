@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Версии VMcraft</title>
+  <meta name="description" content="Все версии лаунчера VMcraft для Android. Скачайте актуальную или предыдущую сборку.">
+  <meta name="theme-color" content="#0A0A0E">
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/icon-round.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="versions">
+  <div class="bedrock" aria-hidden="true"></div>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="index.html">
+        <img src="images/icon.png" alt="VMcraft">
+        VMcraft
+      </a>
+      <nav class="nav-links">
+        <a class="hide-sm" href="index.html#features" data-i18n="navFeat">Возможности</a>
+        <a class="hide-sm" href="index.html#mods" data-i18n="navMods">Моды</a>
+        <a href="versions.html" data-i18n="navVersions">Версии</a>
+        <a class="hide-sm" href="index.html#download" data-i18n="navDl">Скачать</a>
+        <button class="lang" type="button" id="langBtn">EN</button>
+        <a class="btn btn-play" data-apk href="https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk" data-i18n="play">Скачать APK</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap section versions-page">
+    <h1 data-i18n="verTitle">Версии VMcraft</h1>
+    <p class="sub" data-i18n="verSub">Скачайте текущую или любую предыдущую сборку лаунчера.</p>
+    <div id="versionList" class="version-list" aria-live="polite"></div>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="legal" data-i18n="legal">VMcraft — независимый проект. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.</div>
+      <div data-i18n="copy">© VMcraft · VMRcompany</div>
+    </div>
+  </footer>
+  <script src="js/app.js?v=3"></script>
+  <script src="js/versions.js?v=1"></script>
+</body>
+</html>

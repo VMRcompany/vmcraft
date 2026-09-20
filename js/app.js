@@ -1,7 +1,7 @@
 const LATEST_JSON = "https://raw.githubusercontent.com/VMRcompany/vmcraft-updates/main/latest.json";
 const FALLBACK = {
-  versionName: "0.1.12",
-  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.12/VMcraft-0.1.12-release.apk"
+  versionName: "0.1.14",
+  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk"
 };
 
 const I18N = {
@@ -9,6 +9,7 @@ const I18N = {
     navFeat: "Возможности",
     navMods: "Моды",
     navDl: "Скачать",
+    navVersions: "Версии",
     lang: "EN",
     kicker: "Android · Java Edition · v",
     h1: "Minecraft: Java Edition — у тебя в кармане.",
@@ -48,6 +49,12 @@ const I18N = {
     s3t: "Жмите «Играть»",
     s3d: "Синяя кнопка запуска — как в лаунчере. Дальше мир ваш.",
     dlTitle: "Скачать VMcraft",
+    allVersions: "Все версии",
+    verTitle: "Версии VMcraft",
+    verSub: "Скачайте текущую или любую предыдущую сборку лаунчера.",
+    verLatest: "Актуальная",
+    verEmpty: "Пока нет опубликованных версий.",
+    verError: "Не удалось загрузить список версий. Попробуйте обновить страницу.",
     ytTitle: "Наш YouTube канал",
     ytSub: "Гайды, сборки и новости лаунчера — на канале @Воваааанчик.",
     ytBtn: "Открыть YouTube",
@@ -58,6 +65,7 @@ const I18N = {
     navFeat: "Features",
     navMods: "Mods",
     navDl: "Download",
+    navVersions: "Versions",
     lang: "RU",
     kicker: "Android · Java Edition · v",
     h1: "Minecraft: Java Edition in your pocket.",
@@ -97,6 +105,12 @@ const I18N = {
     s3t: "Hit Play",
     s3d: "The blue launch button is the same one as in the app.",
     dlTitle: "Download VMcraft",
+    allVersions: "All versions",
+    verTitle: "VMcraft versions",
+    verSub: "Download the current build or any previous launcher release.",
+    verLatest: "Latest",
+    verEmpty: "No published versions yet.",
+    verError: "Could not load the version list. Refresh the page and try again.",
     ytTitle: "Our YouTube channel",
     ytSub: "Guides, packs, and launcher news on @Воваааанчик.",
     ytBtn: "Open YouTube",
@@ -115,17 +129,27 @@ function applyLang() {
     const key = el.getAttribute("data-i18n");
     if (t[key]) el.textContent = t[key];
   });
-  document.getElementById("langBtn").textContent = t.lang;
-  document.title = lang === "ru"
-    ? "VMcraft — лаунчер Minecraft: Java Edition для Android"
-    : "VMcraft — Minecraft: Java Edition launcher for Android";
+  const langBtn = document.getElementById("langBtn");
+  if (langBtn) langBtn.textContent = t.lang;
+  const onVersions = document.body.dataset.page === "versions";
+  if (onVersions) {
+    document.title = lang === "ru" ? "Версии VMcraft" : "VMcraft versions";
+  } else {
+    document.title = lang === "ru"
+      ? "VMcraft — лаунчер Minecraft: Java Edition для Android"
+      : "VMcraft — Minecraft: Java Edition launcher for Android";
+  }
+  if (typeof window.renderVersions === "function") window.renderVersions();
 }
 
-document.getElementById("langBtn").addEventListener("click", () => {
-  lang = lang === "ru" ? "en" : "ru";
-  localStorage.setItem("vmcraft-lang", lang);
-  applyLang();
-});
+const langBtnEl = document.getElementById("langBtn");
+if (langBtnEl) {
+  langBtnEl.addEventListener("click", () => {
+    lang = lang === "ru" ? "en" : "ru";
+    localStorage.setItem("vmcraft-lang", lang);
+    applyLang();
+  });
+}
 
 applyLang();
 
@@ -186,4 +210,4 @@ document.querySelectorAll("a[data-apk]").forEach((a) => {
   });
 });
 
-loadLatest();
+if (document.querySelector("a[data-apk], [data-version]")) loadLatest();
