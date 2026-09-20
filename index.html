@@ -27,9 +27,15 @@
 </head>
 <body data-page="home" class="home-live">
   <div class="home-bg" aria-hidden="true">
-    <video class="home-bg-video" autoplay muted loop playsinline preload="auto">
-      <source src="videos/home-bg.mp4" type="video/mp4">
-    </video>
+    <video class="home-bg-video" autoplay muted loop playsinline preload="auto"></video>
+    <script>
+      (function () {
+        var month = new Date().getMonth() + 1;
+        var winterOrSpring = month === 12 || month <= 5;
+        var video = document.currentScript.previousElementSibling;
+        video.src = winterOrSpring ? "videos/home-bg-winter.mp4" : "videos/home-bg.mp4";
+      })();
+    </script>
   </div>
   <div class="bedrock" aria-hidden="true"></div>
   <header class="nav" id="siteNav">
