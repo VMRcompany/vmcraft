@@ -1,6 +1,7 @@
-const RELEASES_URL = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases";
+const RELEASES_URL = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases?per_page=100";
+const LOCAL_RELEASES_URL = "data/releases.json";
 
-let cachedReleases = null;
+let cachedReleases = Array.isArray(window.VMCRAFT_RELEASES) ? window.VMCRAFT_RELEASES : null;
 
 function formatSize(bytes) {
   if (!bytes) return "";
@@ -36,7 +37,6 @@ window.renderVersions = function renderVersions() {
     return;
   }
   if (!cachedReleases) {
-    root.innerHTML = '<p class="sub">…</p>';
     return;
   }
 
@@ -73,12 +73,24 @@ window.renderVersions = function renderVersions() {
   }).join("");
 };
 
-(async function loadReleases() {
-  try {
-    const data = await tryJson(RELEASES_URL + "?per_page=100&t=" + Date.now());
-    cachedReleases = Array.isArray(data) ? data : "error";
-  } catch (_) {
-    cachedReleases = "error";
+async function loadReleases() {
+  if (cachedReleases) window.renderVersions();
+
+  const sources = [LOCAL_RELEASES_URL + "?v=20260920c", RELEASES_URL];
+  for (const url of sources) {
+    try {
+      const data = await tryJson(url);
+      if (Array.isArray(data) && data.length) {
+        cachedReleases = data;
+        window.renderVersions();
+      }
+    } catch (_) { /* next source */ }
   }
-  window.renderVersions();
-})();
+
+  if (!cachedReleases) {
+    cachedReleases = "error";
+    window.renderVersions();
+  }
+}
+
+loadReleases();
