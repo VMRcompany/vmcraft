@@ -1,7 +1,6 @@
-const LATEST_JSON = "https://raw.githubusercontent.com/VMRcompany/vmcraft-updates/main/latest.json";
 const FALLBACK = {
   versionName: "0.1.14",
-  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk"
+  apkUrl: "apk/VMcraft-0.1.14-release.apk"
 };
 
 const I18N = {
@@ -153,33 +152,30 @@ if (langBtnEl) {
 
 applyLang();
 
-const GITHUB_LATEST = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases/latest";
-
 async function tryJson(url) {
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) return null;
   return res.json();
 }
 
-async function fromGithubRelease() {
-  const json = await tryJson(GITHUB_LATEST);
-  if (!json) return null;
-  const apk = (json.assets || []).find((asset) => /\.apk$/i.test(asset.name));
-  if (!apk || !apk.browser_download_url) return null;
+const MANIFEST_URL = "apk/manifest.json";
+
+async function fromSiteManifest() {
+  const json = await tryJson(MANIFEST_URL + "?t=" + Date.now());
+  if (!json || !json.releases || !json.releases.length) return null;
+  const latestTag = json.latest || json.releases[0].version;
+  const rel = json.releases.find((item) => item.version === latestTag) || json.releases[0];
+  if (!rel || !rel.path) return null;
   return {
-    versionName: json.tag_name || json.name || FALLBACK.versionName,
-    apkUrl: apk.browser_download_url
+    versionName: rel.version,
+    apkUrl: rel.path
   };
 }
 
 async function fetchLatest() {
   try {
-    const feed = await tryJson(LATEST_JSON + "?t=" + Date.now());
-    if (feed && feed.apkUrl) return feed;
-  } catch (_) { /* try GitHub next */ }
-  try {
-    const gh = await fromGithubRelease();
-    if (gh) return gh;
+    const local = await fromSiteManifest();
+    if (local) return local;
   } catch (_) { /* keep fallback */ }
   return FALLBACK;
 }
@@ -200,14 +196,5 @@ function applyLatest(data) {
 async function loadLatest() {
   applyLatest(await fetchLatest());
 }
-
-document.querySelectorAll("a[data-apk]").forEach((a) => {
-  a.addEventListener("click", async (event) => {
-    event.preventDefault();
-    const data = await fetchLatest();
-    applyLatest(data);
-    window.location.assign(data.apkUrl || FALLBACK.apkUrl);
-  });
-});
 
 if (document.querySelector("a[data-apk], [data-version]")) loadLatest();

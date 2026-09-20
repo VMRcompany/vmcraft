@@ -1,4 +1,4 @@
-const RELEASES_URL = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases";
+const MANIFEST_URL = "apk/manifest.json";
 
 let cachedReleases = null;
 
@@ -22,8 +22,8 @@ function formatDate(iso) {
   });
 }
 
-function apkOf(release) {
-  return (release.assets || []).find((asset) => /\.apk$/i.test(asset.name));
+function toItems(manifest) {
+  return (manifest.releases || []).filter((rel) => rel.path);
 }
 
 window.renderVersions = function renderVersions() {
@@ -40,34 +40,36 @@ window.renderVersions = function renderVersions() {
     return;
   }
 
-  const items = cachedReleases.filter((rel) => !rel.draft && apkOf(rel));
+  const items = toItems(cachedReleases);
   if (!items.length) {
     root.innerHTML = '<p class="sub">' + t.verEmpty + "</p>";
     return;
   }
 
-  root.innerHTML = items.map((rel, index) => {
-    const apk = apkOf(rel);
-    const version = rel.tag_name || rel.name || "";
-    const size = lang === "ru" ? formatSize(apk.size) : formatSizeEn(apk.size);
-    const latest = index === 0
+  const latest = cachedReleases.latest;
+  root.innerHTML = items.map((rel) => {
+    const version = rel.version || "";
+    const size = lang === "ru" ? formatSize(rel.size) : formatSizeEn(rel.size);
+    const badge = rel.version === latest
       ? '<span class="ver-badge">' + t.verLatest + "</span>"
       : "";
     const notes = (rel.body || "").trim();
     const notesHtml = notes
       ? '<p class="ver-notes">' + notes.replace(/[&<>]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[ch])) + "</p>"
       : "";
+    const href = rel.path;
+    const fileName = rel.file || ("VMcraft-" + version + "-release.apk");
     return (
       '<article class="ver-row">' +
         '<div class="ver-main">' +
           '<img src="images/icon.png" alt="">' +
           "<div>" +
-            '<div class="ver-title"><strong>VMcraft ' + version + "</strong>" + latest + "</div>" +
-            '<div class="ver-meta">' + formatDate(rel.published_at) + (size ? " · " + size : "") + "</div>" +
+            '<div class="ver-title"><strong>VMcraft ' + version + "</strong>" + badge + "</div>" +
+            '<div class="ver-meta">' + formatDate(rel.published) + (size ? " · " + size : "") + "</div>" +
             notesHtml +
           "</div>" +
         "</div>" +
-        '<a class="btn btn-play" href="' + apk.browser_download_url + '">' + t.play + "</a>" +
+        '<a class="btn btn-play" href="' + href + '" download="' + fileName + '">' + t.play + "</a>" +
       "</article>"
     );
   }).join("");
@@ -75,8 +77,8 @@ window.renderVersions = function renderVersions() {
 
 (async function loadReleases() {
   try {
-    const data = await tryJson(RELEASES_URL + "?per_page=100&t=" + Date.now());
-    cachedReleases = Array.isArray(data) ? data : "error";
+    const data = await tryJson(MANIFEST_URL + "?t=" + Date.now());
+    cachedReleases = data && data.releases ? data : "error";
   } catch (_) {
     cachedReleases = "error";
   }
