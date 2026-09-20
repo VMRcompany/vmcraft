@@ -20,12 +20,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260920f">
+  <link rel="stylesheet" href="css/style.css?v=20260920g">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"SoftwareApplication","name":"VMcraft","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://vmcraft.mineholde.pro/","description":"Minecraft: Java Edition launcher for Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
 </head>
-<body data-page="home">
+<body data-page="home" class="home-live">
+  <div class="home-bg" aria-hidden="true">
+    <video class="home-bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="videos/home-bg.mp4" type="video/mp4">
+    </video>
+  </div>
   <div class="bedrock" aria-hidden="true"></div>
   <header class="nav" id="siteNav">
     <div class="wrap nav-inner">
@@ -212,6 +217,6 @@
       <div data-i18n="copy">© VMcraft · VMRcompany</div>
     </div>
   </footer>
-  <script src="js/app.js?v=20260920f"></script>
+  <script src="js/app.js?v=20260920g"></script>
 </body>
 </html>

@@ -282,6 +282,16 @@ document.querySelectorAll("a[data-apk]").forEach((a) => {
 
 if (document.querySelector("a[data-apk], [data-version]")) loadLatest();
 
+(function setupHomeBg() {
+  const video = document.querySelector(".home-bg-video");
+  if (!video) return;
+  const play = () => video.play().catch(() => {});
+  play();
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) play();
+  });
+})();
+
 (function setupMenu() {
   const nav = document.getElementById("siteNav");
   const btn = document.getElementById("menuBtn");
