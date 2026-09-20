@@ -40,7 +40,6 @@ const I18N = {
     f9t: "Темы оформления",
     f9d: "Тёмная оболочка лаунчера и набор цветовых пресетов.",
     ecoTitle: "Моды, которые вы уже знаете",
-    ecoSub: "Иконки загрузчиков и каталогов — те же, что внутри VMcraft.",
     howTitle: "Как начать",
     s1t: "Установите APK",
     s1d: "Скачайте свежий релиз и разрешите установку из этого источника.",
@@ -49,7 +48,6 @@ const I18N = {
     s3t: "Жмите «Играть»",
     s3d: "Синяя кнопка запуска — как в лаунчере. Дальше мир ваш.",
     dlTitle: "Скачать VMcraft",
-    dlSub: "Актуальная версия с GitHub Releases. Файл подписывается тем же ключом, что и приложение.",
     ytTitle: "Наш YouTube канал",
     ytSub: "Гайды, сборки и новости лаунчера — на канале @Воваааанчик.",
     ytBtn: "Открыть YouTube",
@@ -91,7 +89,6 @@ const I18N = {
     f9t: "Themes",
     f9d: "Dark launcher chrome plus color presets.",
     ecoTitle: "Loaders you already know",
-    ecoSub: "The same catalog and loader artwork used inside VMcraft.",
     howTitle: "How to start",
     s1t: "Install the APK",
     s1d: "Grab the latest release and allow installs from this source.",
@@ -100,7 +97,6 @@ const I18N = {
     s3t: "Hit Play",
     s3d: "The blue launch button is the same one as in the app.",
     dlTitle: "Download VMcraft",
-    dlSub: "Current build from GitHub Releases. Signed with the same key as the app.",
     ytTitle: "Our YouTube channel",
     ytSub: "Guides, packs, and launcher news on @Воваааанчик.",
     ytBtn: "Open YouTube",
@@ -133,18 +129,61 @@ document.getElementById("langBtn").addEventListener("click", () => {
 
 applyLang();
 
-async function loadLatest() {
-  let data = FALLBACK;
+const GITHUB_LATEST = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases/latest";
+
+async function tryJson(url) {
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+async function fromGithubRelease() {
+  const json = await tryJson(GITHUB_LATEST);
+  if (!json) return null;
+  const apk = (json.assets || []).find((asset) => /\.apk$/i.test(asset.name));
+  if (!apk || !apk.browser_download_url) return null;
+  return {
+    versionName: json.tag_name || json.name || FALLBACK.versionName,
+    apkUrl: apk.browser_download_url
+  };
+}
+
+async function fetchLatest() {
   try {
-    const res = await fetch(LATEST_JSON, { cache: "no-store" });
-    if (res.ok) data = await res.json();
+    const feed = await tryJson(LATEST_JSON + "?t=" + Date.now());
+    if (feed && feed.apkUrl) return feed;
+  } catch (_) { /* try GitHub next */ }
+  try {
+    const gh = await fromGithubRelease();
+    if (gh) return gh;
   } catch (_) { /* keep fallback */ }
+  return FALLBACK;
+}
+
+function applyLatest(data) {
+  const version = data.versionName || FALLBACK.versionName;
+  const apkUrl = data.apkUrl || FALLBACK.apkUrl;
+  const fileName = "VMcraft-" + version + "-release.apk";
   document.querySelectorAll("[data-version]").forEach((el) => {
-    el.textContent = data.versionName || FALLBACK.versionName;
+    el.textContent = version;
   });
   document.querySelectorAll("a[data-apk]").forEach((a) => {
-    a.href = data.apkUrl || FALLBACK.apkUrl;
+    a.href = apkUrl;
+    a.setAttribute("download", fileName);
   });
 }
+
+async function loadLatest() {
+  applyLatest(await fetchLatest());
+}
+
+document.querySelectorAll("a[data-apk]").forEach((a) => {
+  a.addEventListener("click", async (event) => {
+    event.preventDefault();
+    const data = await fetchLatest();
+    applyLatest(data);
+    window.location.assign(data.apkUrl || FALLBACK.apkUrl);
+  });
+});
 
 loadLatest();

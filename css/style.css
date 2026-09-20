@@ -318,6 +318,7 @@ h1 span { color: #8ec4ff; }
   font-size: clamp(1.8rem, 3vw, 2.5rem);
   letter-spacing: -0.04em;
 }
+#mods h2 { margin-bottom: 32px; }
 .section .sub { color: var(--muted); margin: 0 0 32px; max-width: 640px; }
 
 .grid {
@@ -403,8 +404,7 @@ h1 span { color: #8ec4ff; }
   align-items: center;
 }
 .download h2 { margin-top: 0; }
-.dl-note { color: var(--muted); margin-bottom: 18px; }
-.pkg { color: var(--faint); font-size: .88rem; }
+.pkg { color: var(--faint); font-size: .88rem; margin: 0; }
 
 .yt-block {
   display: grid;
