@@ -1,6 +1,8 @@
+const LATEST_JSON = "https://raw.githubusercontent.com/VMRcompany/vmcraft-updates/main/latest.json";
+const GITHUB_LATEST = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases/latest";
 const FALLBACK = {
   versionName: "0.1.14",
-  apkUrl: "apk/VMcraft-0.1.14-release.apk"
+  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk"
 };
 
 const I18N = {
@@ -158,24 +160,25 @@ async function tryJson(url) {
   return res.json();
 }
 
-const MANIFEST_URL = "apk/manifest.json";
-
-async function fromSiteManifest() {
-  const json = await tryJson(MANIFEST_URL + "?t=" + Date.now());
-  if (!json || !json.releases || !json.releases.length) return null;
-  const latestTag = json.latest || json.releases[0].version;
-  const rel = json.releases.find((item) => item.version === latestTag) || json.releases[0];
-  if (!rel || !rel.path) return null;
+async function fromGithubRelease() {
+  const json = await tryJson(GITHUB_LATEST);
+  if (!json) return null;
+  const apk = (json.assets || []).find((asset) => /\.apk$/i.test(asset.name));
+  if (!apk || !apk.browser_download_url) return null;
   return {
-    versionName: rel.version,
-    apkUrl: rel.path
+    versionName: json.tag_name || json.name || FALLBACK.versionName,
+    apkUrl: apk.browser_download_url
   };
 }
 
 async function fetchLatest() {
   try {
-    const local = await fromSiteManifest();
-    if (local) return local;
+    const feed = await tryJson(LATEST_JSON + "?t=" + Date.now());
+    if (feed && feed.apkUrl) return feed;
+  } catch (_) { /* try GitHub next */ }
+  try {
+    const gh = await fromGithubRelease();
+    if (gh) return gh;
   } catch (_) { /* keep fallback */ }
   return FALLBACK;
 }
@@ -183,18 +186,26 @@ async function fetchLatest() {
 function applyLatest(data) {
   const version = data.versionName || FALLBACK.versionName;
   const apkUrl = data.apkUrl || FALLBACK.apkUrl;
-  const fileName = "VMcraft-" + version + "-release.apk";
   document.querySelectorAll("[data-version]").forEach((el) => {
     el.textContent = version;
   });
   document.querySelectorAll("a[data-apk]").forEach((a) => {
     a.href = apkUrl;
-    a.setAttribute("download", fileName);
+    a.removeAttribute("download");
   });
 }
 
 async function loadLatest() {
   applyLatest(await fetchLatest());
 }
+
+document.querySelectorAll("a[data-apk]").forEach((a) => {
+  a.addEventListener("click", async (event) => {
+    event.preventDefault();
+    const data = await fetchLatest();
+    applyLatest(data);
+    window.location.assign(data.apkUrl || FALLBACK.apkUrl);
+  });
+});
 
 if (document.querySelector("a[data-apk], [data-version]")) loadLatest();
