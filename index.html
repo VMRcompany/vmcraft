@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>VMcraft — лаунчер Minecraft Java Edition для Android</title>
-  <meta name="description" content="Скачайте VMcraft: лаунчер Minecraft: Java Edition на Android. Версии, моды, модпаки, серверы и сенсорное управление.">
+  <meta name="description" content="Скачайте VMcraft: лаунчер Minecraft: Java Edition на Android. Версии, моды, модпаки и сенсорное управление.">
   <link rel="canonical" href="https://vmcraft.mineholde.pro/">
   <meta name="theme-color" content="#0A0A0E">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="VMcraft">
   <meta property="og:title" content="VMcraft — лаунчер Minecraft Java Edition для Android">
-  <meta property="og:description" content="Minecraft: Java Edition на Android. Моды, серверы, версии и скачать APK.">
+  <meta property="og:description" content="Minecraft: Java Edition на Android. Моды, версии и скачать APK.">
   <meta property="og:url" content="https://vmcraft.mineholde.pro/">
   <meta property="og:image" content="https://vmcraft.mineholde.pro/images/icon.png">
   <meta name="twitter:card" content="summary">
@@ -19,27 +19,34 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260920e">
+  <link rel="stylesheet" href="css/style.css?v=20260920f">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"SoftwareApplication","name":"VMcraft","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://vmcraft.mineholde.pro/","description":"Minecraft: Java Edition launcher for Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
 </head>
 <body data-page="home">
   <div class="bedrock" aria-hidden="true"></div>
-  <header class="nav">
+  <header class="nav" id="siteNav">
     <div class="wrap nav-inner">
-      <a class="brand" href="index.html">
-        <img src="images/icon.png" alt="VMcraft">
-        VMcraft
-      </a>
-      <nav class="nav-links">
-        <a class="hide-sm" href="#features" data-i18n="navFeat">Возможности</a>
+      <div class="nav-left">
+        <button class="menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="siteMenu" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+        <a class="brand" href="index.html">
+          <img src="images/icon.png" alt="VMcraft">
+          VMcraft
+        </a>
+      </div>
+      <nav class="nav-links" id="siteMenu">
+        <a data-nav="home" href="index.html" data-i18n="navHome">Главная</a>
+        <a href="index.html#features" data-i18n="navFeat">Возможности</a>
         <a data-nav="mods" href="mods.html" data-i18n="navMods">Моды</a>
-        <a data-nav="servers" href="servers.html" data-i18n="navServers">Серверы</a>
         <a data-nav="versions" href="versions.html" data-i18n="navVersions">Версии</a>
+      </nav>
+      <div class="nav-actions">
         <button class="lang" type="button" id="langBtn">EN</button>
         <a class="btn btn-play" data-apk href="https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk" data-i18n="play">Скачать APK</a>
-      </nav>
+      </div>
     </div>
   </header>
 
@@ -197,7 +204,6 @@
         <div class="foot-nav">
           <a href="index.html" data-i18n="navHome">Главная</a>
           <a href="mods.html" data-i18n="navMods">Моды</a>
-          <a href="servers.html" data-i18n="navServers">Серверы</a>
           <a href="versions.html" data-i18n="navVersions">Версии</a>
         </div>
         <div class="legal" data-i18n="legal">VMcraft — независимый проект. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.</div>
@@ -205,6 +211,6 @@
       <div data-i18n="copy">© VMcraft · VMRcompany</div>
     </div>
   </footer>
-  <script src="js/app.js?v=20260920e"></script>
+  <script src="js/app.js?v=20260920f"></script>
 </body>
 </html>

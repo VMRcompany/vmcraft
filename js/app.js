@@ -10,7 +10,7 @@ const I18N = {
     navFeat: "Возможности",
     navHome: "Главная",
     navMods: "Моды",
-    navServers: "Серверы",
+    navMenu: "Меню",
     navDl: "Скачать",
     navVersions: "Версии",
     lang: "EN",
@@ -74,19 +74,6 @@ const I18N = {
     modsH2d: "Создайте профиль Fabric, Quilt, Forge или NeoForge под нужную версию игры.",
     modsH3t: "Или поставьте сборку",
     modsH3d: "Импортируйте .mrpack или zip — VMcraft сам скачает моды и создаст профиль.",
-    srvTitle: "Серверы Java Edition",
-    srvSub: "VMcraft запускает Minecraft: Java Edition, поэтому вы заходите на те же серверы, что и с компьютера.",
-    srvHow: "Как зайти",
-    srvS1t: "Войдите в аккаунт",
-    srvS1d: "Для серверов с online-mode нужен вход через Microsoft.",
-    srvS2t: "Поставьте ту же версию",
-    srvS2d: "Версия (и моды, если сервер модовый) должна совпадать с сервером.",
-    srvS3t: "Добавьте адрес",
-    srvS3d: "В игре: Мультиплеер → Добавить сервер → IP и порт.",
-    srvList: "Список серверов",
-    srvEmpty: "Пока нет опубликованных серверов. Заходите на любой Java-сервер через мультиплеер в игре.",
-    srvCopy: "Копировать IP",
-    srvCopied: "Скопировано",
     ytTitle: "Наш YouTube канал",
     ytSub: "Гайды, сборки и новости лаунчера — на канале @Воваааанчик.",
     ytBtn: "Открыть YouTube",
@@ -97,7 +84,7 @@ const I18N = {
     navFeat: "Features",
     navHome: "Home",
     navMods: "Mods",
-    navServers: "Servers",
+    navMenu: "Menu",
     navDl: "Download",
     navVersions: "Versions",
     lang: "RU",
@@ -161,19 +148,6 @@ const I18N = {
     modsH2d: "Create a Fabric, Quilt, Forge, or NeoForge profile for your game version.",
     modsH3t: "Or import a pack",
     modsH3d: "Import a .mrpack or zip — VMcraft downloads the mods and creates a profile.",
-    srvTitle: "Java Edition servers",
-    srvSub: "VMcraft runs Minecraft: Java Edition, so you join the same servers as on a PC.",
-    srvHow: "How to join",
-    srvS1t: "Sign in",
-    srvS1d: "Online-mode servers need a Microsoft account login.",
-    srvS2t: "Match the version",
-    srvS2d: "Use the same game version (and mods, if the server is modded).",
-    srvS3t: "Add the address",
-    srvS3d: "In game: Multiplayer → Add server → IP and port.",
-    srvList: "Server list",
-    srvEmpty: "No featured servers yet. You can still join any Java server from the in-game multiplayer menu.",
-    srvCopy: "Copy IP",
-    srvCopied: "Copied",
     ytTitle: "Our YouTube channel",
     ytSub: "Guides, packs, and launcher news on @Воваааанчик.",
     ytBtn: "Open YouTube",
@@ -187,16 +161,12 @@ let lang = savedLang === "en" || savedLang === "ru" ? savedLang : "ru";
 
 const SEO = {
   home: {
-    ru: { title: "VMcraft — лаунчер Minecraft Java Edition для Android", desc: "Скачайте VMcraft: лаунчер Minecraft: Java Edition на Android. Версии, моды, модпаки, серверы и сенсорное управление." },
-    en: { title: "VMcraft — Minecraft Java Edition launcher for Android", desc: "Download VMcraft, a Minecraft: Java Edition launcher for Android. Versions, mods, modpacks, servers, and touch controls." }
+    ru: { title: "VMcraft — лаунчер Minecraft Java Edition для Android", desc: "Скачайте VMcraft: лаунчер Minecraft: Java Edition на Android. Версии, моды, модпаки и сенсорное управление." },
+    en: { title: "VMcraft — Minecraft Java Edition launcher for Android", desc: "Download VMcraft, a Minecraft: Java Edition launcher for Android. Versions, mods, modpacks, and touch controls." }
   },
   mods: {
     ru: { title: "Моды для VMcraft — Fabric, Forge, Modrinth, CurseForge", desc: "Как ставить моды и модпаки в VMcraft на Android: Modrinth, CurseForge, Fabric, Quilt, Forge, NeoForge и .mrpack." },
     en: { title: "VMcraft mods — Fabric, Forge, Modrinth, CurseForge", desc: "Install mods and modpacks in VMcraft on Android via Modrinth, CurseForge, Fabric, Quilt, Forge, NeoForge, and .mrpack." }
-  },
-  servers: {
-    ru: { title: "Серверы Minecraft Java в VMcraft", desc: "Заходите на серверы Minecraft: Java Edition с телефона через лаунчер VMcraft. Та же версия, Microsoft-аккаунт, IP сервера." },
-    en: { title: "Minecraft Java servers in VMcraft", desc: "Join Minecraft: Java Edition servers from your phone with the VMcraft launcher. Matching version, Microsoft account, server IP." }
   },
   versions: {
     ru: { title: "Скачать VMcraft — все версии APK", desc: "Все версии лаунчера VMcraft для Android. Скачайте актуальную или предыдущую сборку APK." },
@@ -233,6 +203,8 @@ function applyLang() {
   });
   const langBtn = document.getElementById("langBtn");
   if (langBtn) langBtn.textContent = t.lang;
+  const menuBtnLabel = document.getElementById("menuBtn");
+  if (menuBtnLabel) menuBtnLabel.setAttribute("aria-label", t.navMenu);
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
     const key = el.getAttribute("data-i18n-placeholder");
     if (t[key]) el.setAttribute("placeholder", t[key]);
@@ -240,7 +212,6 @@ function applyLang() {
   applySeo();
   markActiveNav();
   if (typeof window.renderVersions === "function") window.renderVersions();
-  if (typeof window.renderServers === "function") window.renderServers();
   if (typeof window.renderModCards === "function") window.renderModCards();
 }
 
@@ -310,3 +281,26 @@ document.querySelectorAll("a[data-apk]").forEach((a) => {
 });
 
 if (document.querySelector("a[data-apk], [data-version]")) loadLatest();
+
+(function setupMenu() {
+  const nav = document.getElementById("siteNav");
+  const btn = document.getElementById("menuBtn");
+  if (!nav || !btn) return;
+  btn.addEventListener("click", () => {
+    const open = nav.classList.toggle("is-open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  const close = () => {
+    nav.classList.remove("is-open");
+    btn.setAttribute("aria-expanded", "false");
+  };
+  nav.querySelectorAll(".nav-links a").forEach((a) => {
+    a.addEventListener("click", close);
+  });
+  document.addEventListener("click", (e) => {
+    if (!nav.contains(e.target)) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+})();
