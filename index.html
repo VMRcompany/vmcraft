@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VMcraft — лаунчер Minecraft: Java Edition для Android</title>
+  <meta name="description" content="VMcraft — лаунчер Minecraft: Java Edition для Android. Скачивайте версии, ставьте моды и модпаки, настраивайте управление и запускайте игру на телефоне или планшете.">
+  <meta name="theme-color" content="#0A0A0E">
+  <meta property="og:title" content="VMcraft">
+  <meta property="og:description" content="Лаунчер Minecraft: Java Edition для Android.">
+  <meta property="og:image" content="images/icon.png">
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="images/icon-round.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="bedrock" aria-hidden="true"></div>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <img src="images/icon.png" alt="VMcraft">
+        VMcraft
+      </a>
+      <nav class="nav-links">
+        <a class="hide-sm" href="#features" data-i18n="navFeat">Возможности</a>
+        <a class="hide-sm" href="#mods" data-i18n="navMods">Моды</a>
+        <a class="hide-sm" href="#download" data-i18n="navDl">Скачать</a>
+        <button class="lang" type="button" id="langBtn">EN</button>
+        <a class="btn btn-play" data-apk href="https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.12/VMcraft-0.1.12-release.apk" data-i18n="play">Скачать APK</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="wrap hero">
+      <div>
+        <div class="kicker"><span data-i18n="kicker">Android · Java Edition · v</span><span data-version>0.1.12</span></div>
+        <h1 data-i18n="h1">Minecraft: Java Edition — у тебя в кармане.</h1>
+        <p class="lead" data-i18n="lead">VMcraft — удобный лаунчер Minecraft: Java Edition на Android. Играйте в Java-версию прямо со смартфона или планшета: версии, моды, сборки и свои настройки — в одном приложении.</p>
+        <div class="cta-row">
+          <a class="btn btn-play" data-apk href="https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.12/VMcraft-0.1.12-release.apk" data-i18n="play">Скачать APK</a>
+          <a class="btn btn-yt" href="https://www.youtube.com/@Воваааанчик" rel="noopener" target="_blank">
+            <img src="images/youtube.svg" alt="">
+            <span data-i18n="yt">Наш YouTube канал</span>
+          </a>
+        </div>
+        <div class="meta">
+          <span><b data-i18n="android">Android 5.0+</b></span>
+          <span><span data-i18n="pkg">Пакет</span> <b>app.vmcraft.pro</b></span>
+          <span>v<b data-version>0.1.12</b></span>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="glow"></div>
+        <img class="cube" src="images/icon-foreground.png" alt="Иконка VMcraft — куб VM">
+        <div class="phone" aria-hidden="true">
+          <div class="notch"></div>
+          <div class="mock-banner" data-i18n="banner">VMcraft – лаунчер Minecraft Java Edition для Android</div>
+          <div class="mock-list">
+            <div class="mock-row"><img src="images/icon.png" alt=""> 1.21.4</div>
+            <div class="mock-row"><img src="images/fabric.webp" alt=""> Fabric</div>
+            <div class="mock-row"><img src="images/quilt.webp" alt=""> Quilt</div>
+          </div>
+          <button class="mock-play" type="button" data-i18n="mockPlay">Играть</button>
+          <div class="mock-yt">
+            <img src="images/youtube.svg" alt="">
+            <span data-i18n="yt">Наш YouTube канал</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="features">
+      <h2 data-i18n="featTitle">Что умеет VMcraft</h2>
+      <p class="sub" data-i18n="featSub">Всё, что нужно, чтобы запустить Java Edition на телефоне — без лишней суеты.</p>
+      <div class="grid">
+        <article class="card">
+          <img src="images/icon.png" alt="">
+          <h3 data-i18n="f1t">Запуск Java Edition</h3>
+          <p data-i18n="f1d">Играйте в Minecraft: Java Edition на смартфоне или планшете.</p>
+        </article>
+        <article class="card">
+          <img src="images/renderer.png" alt="">
+          <h3 data-i18n="f2t">Версии и сборки</h3>
+          <p data-i18n="f2d">Выбирайте версию игры и отдельные инстансы под разные миры.</p>
+        </article>
+        <article class="card">
+          <img src="images/modrinth.png" alt="">
+          <h3 data-i18n="f3t">Моды и модпаки</h3>
+          <p data-i18n="f3d">Ставьте моды и модпаки прямо из лаунчера.</p>
+        </article>
+        <article class="card">
+          <img src="images/signin.webp" alt="">
+          <h3 data-i18n="f4t">Microsoft и локальный профиль</h3>
+          <p data-i18n="f4d">Вход через аккаунт Microsoft или локальный профиль.</p>
+        </article>
+        <article class="card">
+          <img src="images/gamepad.png" alt="">
+          <h3 data-i18n="f5t">Сенсорное управление</h3>
+          <p data-i18n="f5d">Пользовательские кнопки под ваш стиль игры на экране.</p>
+        </article>
+        <article class="card">
+          <img src="images/mouse.png" alt="">
+          <h3 data-i18n="f6t">JAR-установщики</h3>
+          <p data-i18n="f6d">Запускайте .jar-установщики, когда это нужно.</p>
+        </article>
+        <article class="card">
+          <img src="images/background.png" alt="">
+          <h3 data-i18n="f7t">Папка игры</h3>
+          <p data-i18n="f7d">Удобный доступ к файлам мира, модов и настроек.</p>
+        </article>
+        <article class="card">
+          <img src="images/notif.png" alt="">
+          <h3 data-i18n="f8t">Самообновление</h3>
+          <p data-i18n="f8d">Лаунчер умеет предлагать новую версию APK, если вы ставите его не из магазина.</p>
+        </article>
+        <article class="card">
+          <img src="images/theme.png" alt="">
+          <h3 data-i18n="f9t">Темы оформления</h3>
+          <p data-i18n="f9d">Тёмная оболочка лаунчера и набор цветовых пресетов.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="mods">
+      <h2 data-i18n="ecoTitle">Моды, которые вы уже знаете</h2>
+      <p class="sub" data-i18n="ecoSub">Иконки загрузчиков и каталогов — те же, что внутри VMcraft.</p>
+      <div class="ecosystem">
+        <div class="eco"><img src="images/modrinth.png" alt="Modrinth"><span>Modrinth</span></div>
+        <div class="eco"><img src="images/curseforge.png" alt="CurseForge"><span>CurseForge</span></div>
+        <div class="eco"><img src="images/fabric.webp" alt="Fabric"><span>Fabric</span></div>
+        <div class="eco"><img src="images/quilt.webp" alt="Quilt"><span>Quilt</span></div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="start">
+      <h2 data-i18n="howTitle">Как начать</h2>
+      <div class="steps">
+        <article class="step">
+          <div class="num">1</div>
+          <h3 data-i18n="s1t">Установите APK</h3>
+          <p data-i18n="s1d">Скачайте свежий релиз и разрешите установку из этого источника.</p>
+        </article>
+        <article class="step">
+          <div class="num">2</div>
+          <h3 data-i18n="s2t">Выберите версию</h3>
+          <p data-i18n="s2d">Скачайте нужную сборку Java Edition и при желании моды.</p>
+        </article>
+        <article class="step">
+          <div class="num">3</div>
+          <h3 data-i18n="s3t">Жмите «Играть»</h3>
+          <p data-i18n="s3d">Синяя кнопка запуска — как в лаунчере. Дальше мир ваш.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="download">
+      <div class="download">
+        <div>
+          <h2 data-i18n="dlTitle">Скачать VMcraft</h2>
+          <p class="dl-note" data-i18n="dlSub">Актуальная версия с GitHub Releases. Файл подписывается тем же ключом, что и приложение.</p>
+          <p class="pkg">app.vmcraft.pro · <span data-i18n="android">Android 5.0+</span> · v<span data-version>0.1.12</span></p>
+        </div>
+        <a class="btn btn-play" data-apk href="https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.12/VMcraft-0.1.12-release.apk" data-i18n="play">Скачать APK</a>
+      </div>
+    </section>
+
+    <section class="wrap section" id="youtube">
+      <div class="yt-block">
+        <img class="icon-lg" src="images/youtube.svg" alt="YouTube">
+        <div>
+          <h2 style="margin:0" data-i18n="ytTitle">Наш YouTube канал</h2>
+          <p data-i18n="ytSub">Гайды, сборки и новости лаунчера — на канале @Воваааанчик.</p>
+        </div>
+        <a class="btn btn-yt" href="https://www.youtube.com/@Воваааанчик" rel="noopener" target="_blank" data-i18n="ytBtn">Открыть YouTube</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="legal" data-i18n="legal">VMcraft — независимый проект. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.</div>
+      <div data-i18n="copy">© VMcraft · VMRcompany</div>
+    </div>
+  </footer>
+  <script src="js/app.js"></script>
+</body>
+</html>
