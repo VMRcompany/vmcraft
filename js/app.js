@@ -110,9 +110,7 @@ const I18N = {
 };
 
 const savedLang = localStorage.getItem("vmcraft-lang");
-let lang = savedLang === "en" || savedLang === "ru"
-  ? savedLang
-  : ((navigator.language || "").toLowerCase().startsWith("en") ? "en" : "ru");
+let lang = savedLang === "en" || savedLang === "ru" ? savedLang : "ru";
 
 function applyLang() {
   const t = I18N[lang];
