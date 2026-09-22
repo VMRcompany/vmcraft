@@ -296,6 +296,24 @@ h1 span { color: #8ec4ff; }
 
 .meta b { color: var(--text); font-weight: 700; }
 
+.apkpure-wrap {
+  margin-top: 18px;
+  max-width: 420px;
+}
+
+.apkpure-wrap-top {
+  margin-top: 0;
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+
+.apkpure-app-card {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  quotes: none;
+}
+
 .stage {
   position: relative;
   min-height: 540px;
