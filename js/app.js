@@ -1,8 +1,8 @@
 const LATEST_JSON = "https://raw.githubusercontent.com/VMRcompany/vmcraft-updates/main/latest.json";
 const GITHUB_LATEST = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases/latest";
 const FALLBACK = {
-  versionName: "0.1.14",
-  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.14/VMcraft-0.1.14-release.apk"
+  versionName: "0.1.39",
+  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.39/VMcraft-0.1.39-release.apk"
 };
 
 const I18N = {

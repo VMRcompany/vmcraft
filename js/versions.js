@@ -1,5 +1,5 @@
-const RELEASES_URL = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases?per_page=100";
-const LOCAL_RELEASES_URL = "data/releases.json";
+const RELEASES_API = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases";
+const LOCAL_RELEASES_URL = "data/releases.json?v=20260929a";
 
 let cachedReleases = Array.isArray(window.VMCRAFT_RELEASES) ? window.VMCRAFT_RELEASES : null;
 
@@ -27,6 +27,40 @@ function apkOf(release) {
   return (release.assets || []).find((asset) => /\.apk$/i.test(asset.name));
 }
 
+function versionParts(tag) {
+  return String(tag || "")
+    .replace(/^v/i, "")
+    .split(/[^\d]+/)
+    .filter(Boolean)
+    .map((n) => parseInt(n, 10));
+}
+
+function newerFirst(a, b) {
+  const pa = versionParts(a.tag_name || a.name);
+  const pb = versionParts(b.tag_name || b.name);
+  const len = Math.max(pa.length, pb.length);
+  for (let i = 0; i < len; i++) {
+    const d = (pb[i] || 0) - (pa[i] || 0);
+    if (d) return d;
+  }
+  return Date.parse(b.published_at || 0) - Date.parse(a.published_at || 0);
+}
+
+function asList(value) {
+  return Array.isArray(value) ? value : [];
+}
+
+function mergeReleases(...lists) {
+  const map = new Map();
+  lists.flat().forEach((rel) => {
+    if (!rel || rel.draft) return;
+    const key = rel.tag_name || rel.name;
+    if (!key || map.has(key)) return;
+    map.set(key, rel);
+  });
+  return [...map.values()].sort(newerFirst);
+}
+
 window.renderVersions = function renderVersions() {
   const root = document.getElementById("versionList");
   if (!root) return;
@@ -40,7 +74,7 @@ window.renderVersions = function renderVersions() {
     return;
   }
 
-  const items = cachedReleases.filter((rel) => !rel.draft && apkOf(rel));
+  const items = asList(cachedReleases).filter((rel) => !rel.draft && apkOf(rel)).sort(newerFirst);
   if (!items.length) {
     root.innerHTML = '<p class="sub">' + t.verEmpty + "</p>";
     return;
@@ -73,21 +107,37 @@ window.renderVersions = function renderVersions() {
   }).join("");
 };
 
+async function fetchGithubNewestFirst() {
+  const all = [];
+  for (let page = 1; page <= 20; page++) {
+    const data = await tryJson(RELEASES_API + "?per_page=100&page=" + page);
+    if (!Array.isArray(data) || !data.length) break;
+    all.push(...data);
+    cachedReleases = mergeReleases(asList(cachedReleases), data);
+    window.renderVersions();
+    if (data.length < 100) break;
+  }
+  return all;
+}
+
 async function loadReleases() {
   if (cachedReleases) window.renderVersions();
 
-  const sources = [LOCAL_RELEASES_URL + "?v=20260920c", RELEASES_URL];
-  for (const url of sources) {
-    try {
-      const data = await tryJson(url);
-      if (Array.isArray(data) && data.length) {
-        cachedReleases = data;
-        window.renderVersions();
-      }
-    } catch (_) { /* next source */ }
-  }
+  let githubOk = false;
+  try {
+    const github = await fetchGithubNewestFirst();
+    githubOk = github.length > 0;
+  } catch (_) { /* local fallback */ }
 
-  if (!cachedReleases) {
+  try {
+    const local = await tryJson(LOCAL_RELEASES_URL);
+    if (Array.isArray(local) && local.length) {
+      cachedReleases = mergeReleases(asList(cachedReleases), local);
+      window.renderVersions();
+    }
+  } catch (_) { /* ignore */ }
+
+  if (!asList(cachedReleases).length && !githubOk) {
     cachedReleases = "error";
     window.renderVersions();
   }
