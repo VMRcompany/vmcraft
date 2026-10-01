@@ -13,6 +13,7 @@ const I18N = {
     navMenu: "Меню",
     navDl: "Скачать",
     navVersions: "Версии",
+    navPe: "VMcraftPE",
     lang: "EN",
     kicker: "Android · Java Edition · v",
     h1: "Minecraft: Java Edition — у тебя в кармане.",
@@ -78,7 +79,38 @@ const I18N = {
     ytSub: "Гайды, сборки и новости лаунчера — на канале @Воваааанчик.",
     ytBtn: "Открыть YouTube",
     legal: "VMcraft — независимый проект. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.",
-    copy: "© VMcraft · VMRcompany"
+    copy: "© VMcraft · VMRcompany",
+    peKicker: "Android · песочница · v",
+    peH1: "VMcraftPE — своя игра в кармане.",
+    peLead: "VMcraftPE — воксельная песочница для Android. Стройте миры, играйте по сети и ставьте контент прямо на телефоне. Это отдельная игра, не лаунчер Java Edition.",
+    peAndroid: "Android 5.0+",
+    peBanner: "VMcraftPE — игра для Android",
+    peFeatTitle: "Что умеет VMcraftPE",
+    peFeatSub: "Свободная песочница на телефоне: миры, сеть и обновления из нашего репозитория.",
+    peF1t: "Свои миры",
+    peF1d: "Стройте и исследуйте воксельные миры на смартфоне или планшете.",
+    peF2t: "Мультиплеер",
+    peF2d: "Заходите на серверы по сети — протокол и нативные библиотеки игры сохранены.",
+    peF3t: "Моды и контент",
+    peF3d: "Подключайте дополнительные игры, моды и текстуры из каталога в приложении.",
+    peF4t: "Сенсорное управление",
+    peF4d: "Кнопки, прыжок, чат и камера рассчитаны на управление пальцами.",
+    peF5t: "Самообновление",
+    peF5d: "Сборка, установленная не из магазина, сама проверяет GitHub на новый APK.",
+    peF6t: "Бесплатный APK",
+    peF6d: "Скачивайте игру напрямую. Пакет app.vmpe.game, архитектура arm64-v8a.",
+    peHowTitle: "Как начать",
+    peS1t: "Установите APK",
+    peS1d: "Скачайте свежий релиз и разрешите установку из этого источника.",
+    peS2t: "Откройте VMcraftPE",
+    peS2d: "Дождитесь распаковки данных — это занимает меньше минуты.",
+    peS3t: "Играйте",
+    peS3d: "Создайте мир или зайдите на сервер. Дальше всё в ваших руках.",
+    peDlTitle: "Скачать VMcraftPE",
+    peAllVersions: "Все версии VMcraftPE",
+    peVerTitle: "Версии VMcraftPE",
+    peVerSub: "Скачайте текущую или любую предыдущую сборку игры.",
+    peLegal: "VMcraftPE — независимый проект VMRcompany. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB."
   },
   en: {
     navFeat: "Features",
@@ -87,6 +119,7 @@ const I18N = {
     navMenu: "Menu",
     navDl: "Download",
     navVersions: "Versions",
+    navPe: "VMcraftPE",
     lang: "RU",
     kicker: "Android · Java Edition · v",
     h1: "Minecraft: Java Edition in your pocket.",
@@ -152,7 +185,38 @@ const I18N = {
     ytSub: "Guides, packs, and launcher news on @Воваааанчик.",
     ytBtn: "Open YouTube",
     legal: "VMcraft is an independent project. It is not affiliated with Mojang, Microsoft, or Minecraft. Minecraft is a trademark of Mojang Synergies AB.",
-    copy: "© VMcraft · VMRcompany"
+    copy: "© VMcraft · VMRcompany",
+    peKicker: "Android · sandbox · v",
+    peH1: "VMcraftPE — a game in your pocket.",
+    peLead: "VMcraftPE is a voxel sandbox for Android. Build worlds, play online, and install extra content on your phone. It is a separate game, not the Java Edition launcher.",
+    peAndroid: "Android 5.0+",
+    peBanner: "VMcraftPE — Android game",
+    peFeatTitle: "What VMcraftPE can do",
+    peFeatSub: "A free sandbox on your phone: worlds, multiplayer, and updates from our repository.",
+    peF1t: "Your worlds",
+    peF1d: "Build and explore voxel worlds on a phone or tablet.",
+    peF2t: "Multiplayer",
+    peF2d: "Join servers over the network — the game protocol and native libraries were kept intact.",
+    peF3t: "Mods and content",
+    peF3d: "Add extra games, mods, and textures from the in-app catalog.",
+    peF4t: "Touch controls",
+    peF4d: "Jump, chat, camera, and action buttons made for fingers.",
+    peF5t: "Self-update",
+    peF5d: "Sideloaded builds check GitHub for a newer APK.",
+    peF6t: "Free APK",
+    peF6d: "Download the game directly. Package app.vmpe.game, arm64-v8a.",
+    peHowTitle: "How to start",
+    peS1t: "Install the APK",
+    peS1d: "Grab the latest release and allow installs from this source.",
+    peS2t: "Open VMcraftPE",
+    peS2d: "Wait for the data unpack — it takes less than a minute.",
+    peS3t: "Play",
+    peS3d: "Create a world or join a server.",
+    peDlTitle: "Download VMcraftPE",
+    peAllVersions: "All VMcraftPE versions",
+    peVerTitle: "VMcraftPE versions",
+    peVerSub: "Download the current build or any previous game release.",
+    peLegal: "VMcraftPE is an independent VMRcompany project. It is not affiliated with Mojang, Microsoft, or Minecraft. Minecraft is a trademark of Mojang Synergies AB."
   }
 };
 
@@ -171,6 +235,14 @@ const SEO = {
   versions: {
     ru: { title: "Скачать VMcraft — все версии APK", desc: "Все версии лаунчера VMcraft для Android. Скачайте актуальную или предыдущую сборку APK." },
     en: { title: "Download VMcraft — all APK versions", desc: "Every VMcraft Android launcher release. Download the latest or an older APK build." }
+  },
+  pe: {
+    ru: { title: "VMcraftPE — воксельная песочница для Android", desc: "Скачайте VMcraftPE: своя игра на Android. Миры, мультиплеер, моды и актуальный APK." },
+    en: { title: "VMcraftPE — voxel sandbox for Android", desc: "Download VMcraftPE, a voxel sandbox game for Android. Worlds, multiplayer, mods, and the latest APK." }
+  },
+  "pe-versions": {
+    ru: { title: "Скачать VMcraftPE — все версии APK", desc: "Все версии игры VMcraftPE для Android. Скачайте актуальную или предыдущую сборку." },
+    en: { title: "Download VMcraftPE — all APK versions", desc: "Every VMcraftPE Android game release. Download the latest or an older APK." }
   }
 };
 
@@ -212,6 +284,7 @@ function applyLang() {
   applySeo();
   markActiveNav();
   if (typeof window.renderVersions === "function") window.renderVersions();
+  if (typeof window.renderPeVersions === "function") window.renderPeVersions();
   if (typeof window.renderModCards === "function") window.renderModCards();
 }
 
@@ -281,6 +354,59 @@ document.querySelectorAll("a[data-apk]").forEach((a) => {
 });
 
 if (document.querySelector("a[data-apk], [data-version]")) loadLatest();
+
+const PE_GITHUB_LATEST = "https://api.github.com/repos/VMRcompany/VMcraftPE/releases/latest";
+const PE_FALLBACK = {
+  versionName: "0.1.3",
+  apkUrl: "https://github.com/VMRcompany/VMcraftPE/releases/download/v5180003/VMcraftPE.apk"
+};
+
+async function fromPeGithubRelease() {
+  const json = await tryJson(PE_GITHUB_LATEST);
+  if (!json) return null;
+  const apk = (json.assets || []).find((asset) => /\.apk$/i.test(asset.name));
+  if (!apk || !apk.browser_download_url) return null;
+  const name = (json.name || "").trim();
+  return {
+    versionName: /^\d+\.\d+/.test(name) ? name : (json.tag_name || PE_FALLBACK.versionName).replace(/^v/i, ""),
+    apkUrl: apk.browser_download_url
+  };
+}
+
+async function fetchPeLatest() {
+  try {
+    const gh = await fromPeGithubRelease();
+    if (gh) return gh;
+  } catch (_) { /* keep fallback */ }
+  return PE_FALLBACK;
+}
+
+function applyPeLatest(data) {
+  const version = data.versionName || PE_FALLBACK.versionName;
+  const apkUrl = data.apkUrl || PE_FALLBACK.apkUrl;
+  document.querySelectorAll("[data-version-pe]").forEach((el) => {
+    el.textContent = version;
+  });
+  document.querySelectorAll("a[data-apk-pe]").forEach((a) => {
+    a.href = apkUrl;
+    a.removeAttribute("download");
+  });
+}
+
+async function loadPeLatest() {
+  applyPeLatest(await fetchPeLatest());
+}
+
+document.querySelectorAll("a[data-apk-pe]").forEach((a) => {
+  a.addEventListener("click", async (event) => {
+    event.preventDefault();
+    const data = await fetchPeLatest();
+    applyPeLatest(data);
+    window.location.assign(data.apkUrl || PE_FALLBACK.apkUrl);
+  });
+});
+
+if (document.querySelector("a[data-apk-pe], [data-version-pe]")) loadPeLatest();
 
 (function setupHomeBg() {
   const video = document.querySelector(".home-bg-video");

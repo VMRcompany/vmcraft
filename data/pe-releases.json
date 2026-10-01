@@ -1,0 +1,47 @@
+[
+  {
+    "tag_name": "v5180003",
+    "name": "0.1.3",
+    "published_at": "2026-09-29T18:02:36Z",
+    "body": "Версия 0.1.3. Возвращён прежний интерфейс меню.",
+    "draft": false,
+    "prerelease": false,
+    "assets": [
+      {
+        "name": "VMcraftPE.apk",
+        "size": 18250432,
+        "browser_download_url": "https://github.com/VMRcompany/VMcraftPE/releases/download/v5180003/VMcraftPE.apk"
+      }
+    ]
+  },
+  {
+    "tag_name": "v5180002",
+    "name": "0.1.2",
+    "published_at": "2026-09-29T17:57:16Z",
+    "body": "Версия 0.1.2. Новое оформление меню.",
+    "draft": false,
+    "prerelease": false,
+    "assets": [
+      {
+        "name": "VMcraftPE.apk",
+        "size": 18251011,
+        "browser_download_url": "https://github.com/VMRcompany/VMcraftPE/releases/download/v5180002/VMcraftPE.apk"
+      }
+    ]
+  },
+  {
+    "tag_name": "v5180001",
+    "name": "0.1.1",
+    "published_at": "2026-09-28T19:44:16Z",
+    "body": "Версия 0.1.1",
+    "draft": false,
+    "prerelease": false,
+    "assets": [
+      {
+        "name": "VMcraftPE.apk",
+        "size": 18249973,
+        "browser_download_url": "https://github.com/VMRcompany/VMcraftPE/releases/download/v5180001/VMcraftPE.apk"
+      }
+    ]
+  }
+]
