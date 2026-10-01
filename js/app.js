@@ -1,8 +1,8 @@
 const LATEST_JSON = "https://raw.githubusercontent.com/VMRcompany/vmcraft-updates/main/latest.json";
 const GITHUB_LATEST = "https://api.github.com/repos/VMRcompany/vmcraft-updates/releases/latest";
 const FALLBACK = {
-  versionName: "0.1.39",
-  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.39/VMcraft-0.1.39-release.apk"
+  versionName: "0.1.40",
+  apkUrl: "https://github.com/VMRcompany/vmcraft-updates/releases/download/0.1.40/VMcraft-0.1.40-release.apk"
 };
 
 const I18N = {
@@ -316,16 +316,63 @@ async function fromGithubRelease() {
   };
 }
 
+function versionParts(tag) {
+  return String(tag || "")
+    .replace(/^v/i, "")
+    .split(/[^\d]+/)
+    .filter(Boolean)
+    .map((n) => parseInt(n, 10));
+}
+
+function newerRelease(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  const pa = versionParts(a.versionName);
+  const pb = versionParts(b.versionName);
+  const len = Math.max(pa.length, pb.length);
+  for (let i = 0; i < len; i++) {
+    const d = (pa[i] || 0) - (pb[i] || 0);
+    if (d) return d > 0 ? a : b;
+  }
+  return a;
+}
+
+async function fromGithubReleasesList() {
+  const data = await tryJson("https://api.github.com/repos/VMRcompany/vmcraft-updates/releases?per_page=30");
+  if (!Array.isArray(data) || !data.length) return null;
+  let best = null;
+  data.forEach((rel) => {
+    if (!rel || rel.draft) return;
+    const apk = (rel.assets || []).find((asset) => /\.apk$/i.test(asset.name));
+    if (!apk || !apk.browser_download_url) return;
+    best = newerRelease(best, {
+      versionName: rel.tag_name || rel.name || "",
+      apkUrl: apk.browser_download_url
+    });
+  });
+  return best;
+}
+
 async function fetchLatest() {
-  try {
-    const feed = await tryJson(LATEST_JSON + "?t=" + Date.now());
-    if (feed && feed.apkUrl) return feed;
-  } catch (_) { /* try GitHub next */ }
+  const found = [];
   try {
     const gh = await fromGithubRelease();
-    if (gh) return gh;
-  } catch (_) { /* keep fallback */ }
-  return FALLBACK;
+    if (gh) found.push(gh);
+  } catch (_) { /* next */ }
+  try {
+    const list = await fromGithubReleasesList();
+    if (list) found.push(list);
+  } catch (_) { /* next */ }
+  try {
+    const feed = await tryJson(LATEST_JSON + "?t=" + Date.now());
+    if (feed && feed.apkUrl) {
+      found.push({
+        versionName: feed.versionName || feed.tag_name || "",
+        apkUrl: feed.apkUrl
+      });
+    }
+  } catch (_) { /* keep others */ }
+  return found.reduce(newerRelease, null) || FALLBACK;
 }
 
 function applyLatest(data) {

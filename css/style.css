@@ -301,6 +301,27 @@ h1 span { color: #8ec4ff; }
   min-height: 540px;
 }
 
+.pe-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+}
+
+.pe-stage .glow {
+  left: 50%;
+  top: 50%;
+}
+
+.pe-stage .pe-logo,
+.pe-stage .cube {
+  position: static;
+  left: auto;
+  top: auto;
+  width: min(280px, 72%);
+  transform: none;
+}
+
 .glow {
   position: absolute;
   width: 340px;
