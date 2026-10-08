@@ -659,6 +659,17 @@ footer {
 .foot-nav a { color: var(--muted); text-decoration: none; font-weight: 700; }
 .foot-nav a:hover { color: var(--text); }
 
+.rustore-badge {
+  display: inline-block;
+  margin: 4px 0 14px;
+  line-height: 0;
+}
+.rustore-badge img {
+  display: block;
+  width: 188px;
+  height: 63px;
+}
+
 .versions-page h2 { margin-top: 36px; }
 
 @media (max-width: 920px) {
