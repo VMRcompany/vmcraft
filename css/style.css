@@ -659,12 +659,18 @@ footer {
 .foot-nav a { color: var(--muted); text-decoration: none; font-weight: 700; }
 .foot-nav a:hover { color: var(--text); }
 
-.rustore-badge {
-  display: inline-block;
+.store-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
   margin: 4px 0 14px;
+}
+.store-badges a {
+  display: inline-block;
   line-height: 0;
 }
-.rustore-badge img {
+.store-badges img {
   display: block;
   width: 111px;
   height: 40px;
