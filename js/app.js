@@ -116,7 +116,7 @@ const I18N = {
     cookiePolicy: "Политика конфиденциальности",
     cookieAccept: "Принять",
     privacyTitle: "Политика конфиденциальности",
-    privacyUpdated: "Сайт vmcraft.mineholde.pro. Оператор: VMRcompany.",
+    privacyUpdated: "Это официальный сайт проекта VMcraft: vmcraft.mineholde.pro. Оператор: MineHolde Apps&Games.",
     privacyH1: "Какие данные мы обрабатываем",
     privacyP1: "Сайт статический. Мы не просим имя, почту или пароль. В браузере могут сохраняться язык интерфейса и согласие на cookies.",
     privacyH2: "Cookies",
@@ -128,7 +128,8 @@ const I18N = {
     privacyH5: "Как отказаться",
     privacyP5: "Можно очистить данные сайта в настройках браузера. Тогда виджет cookies появится снова. Также можно отключить cookies и счётчики в самом браузере.",
     privacyH6: "Контакты",
-    privacyP6: "По вопросам политики пишите в репозиторий VMRcompany на GitHub."
+    privacyP6: "По вопросам политики пишите на support.mineholde@gmail.com",
+    footSupport: "Оставьте свой вопрос или обратитесь в поддержку на support.mineholde@gmail.com"
   },
   en: {
     navFeat: "Features",
@@ -240,7 +241,7 @@ const I18N = {
     cookiePolicy: "Privacy policy",
     cookieAccept: "Accept",
     privacyTitle: "Privacy policy",
-    privacyUpdated: "Site vmcraft.mineholde.pro. Operator: VMRcompany.",
+    privacyUpdated: "This is the official VMcraft project site: vmcraft.mineholde.pro. Operator: MineHolde Apps&Games.",
     privacyH1: "What data we process",
     privacyP1: "This is a static site. We do not ask for a name, email, or password. The browser may store the interface language and cookie consent.",
     privacyH2: "Cookies",
@@ -252,7 +253,8 @@ const I18N = {
     privacyH5: "How to opt out",
     privacyP5: "You can clear this site’s data in browser settings. The cookie widget will show again. You can also disable cookies and trackers in the browser.",
     privacyH6: "Contact",
-    privacyP6: "For privacy questions, write in the VMRcompany repository on GitHub."
+    privacyP6: "For privacy questions, write to support.mineholde@gmail.com",
+    footSupport: "Leave your question or contact support at support.mineholde@gmail.com"
   }
 };
 
@@ -311,7 +313,15 @@ function applyLang() {
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
-    if (t[key]) el.textContent = t[key];
+    if (!t[key]) return;
+    if (key === "privacyP6" || key === "footSupport") {
+      el.innerHTML = t[key].replace(
+        /support\.mineholde@gmail\.com/g,
+        '<a href="mailto:support.mineholde@gmail.com">support.mineholde@gmail.com</a>'
+      );
+    } else {
+      el.textContent = t[key];
+    }
   });
   const langBtn = document.getElementById("langBtn");
   if (langBtn) langBtn.textContent = t.lang;

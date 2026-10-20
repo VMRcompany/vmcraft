@@ -678,6 +678,13 @@ footer {
 }
 .foot-nav a { color: var(--muted); text-decoration: none; font-weight: 700; }
 .foot-nav a:hover { color: var(--text); }
+.foot-support {
+  margin: 12px 0 0;
+  max-width: 520px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.foot-support a { color: #8ec4ff; }
 
 .store-badges {
   display: flex;
@@ -788,6 +795,7 @@ footer {
   box-shadow: var(--shadow);
 }
 html.cookie-pending .cookie-banner { display: flex; }
+html.cookie-pending footer { padding-bottom: 140px; }
 .cookie-banner img {
   width: 56px;
   height: 56px;
@@ -812,6 +820,7 @@ html.cookie-pending .cookie-banner { display: flex; }
   max-width: 720px;
   color: var(--muted);
 }
+.policy-page a { color: #8ec4ff; }
 @media (max-width: 640px) {
   .cookie-banner {
     flex-wrap: wrap;
