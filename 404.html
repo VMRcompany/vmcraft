@@ -6,13 +6,13 @@
   <link rel="canonical" href="https://vmcraft.mineholde.pro/">
   <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css?v=20261020b">
+  <link rel="stylesheet" href="css/style.css?v=20261020c">
   <script>
     (function () {
       try {
-        if (sessionStorage.getItem("vmcraft-captcha-ok")) return;
-        if (/bot|crawl|spider|slurp|mediapartners|yandex|googlebot|bingbot|baidu/i.test(navigator.userAgent)) return;
-        document.documentElement.classList.add("captcha-lock");
+        if (!localStorage.getItem("vmcraft-cookies-ok")) {
+          document.documentElement.classList.add("cookie-pending");
+        }
       } catch (e) {}
     })();
   </script>
@@ -28,6 +28,14 @@
       <a class="btn btn-ghost" href="pe.html">VMcraftPE</a>
     </p>
   </main>
-  <script src="js/captcha.js?v=20261020b"></script>
+  <aside class="cookie-banner" id="cookieBanner">
+    <img src="images/cookie.jpg" width="56" height="56" alt="">
+    <p>
+      <span data-i18n="cookieText">Мы используем cookies, чтобы сайт работал удобнее.</span>
+      <a class="cookie-link" href="privacy.html" data-i18n="cookiePolicy">Политика конфиденциальности</a>
+    </p>
+    <button type="button" class="btn btn-play" id="cookieAccept" data-i18n="cookieAccept">Принять</button>
+  </aside>
+  <script src="js/cookie.js?v=20261020c"></script>
 </body>
 </html>

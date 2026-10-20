@@ -1,3 +1,18 @@
+@font-face {
+  font-family: "Mojangels Big";
+  src: url("../fonts/MojangelsBig.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Mojangels Mini";
+  src: url("../fonts/MojangelsMini.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #07070a;
   --bg-elev: #121214;
@@ -13,7 +28,8 @@
   --yt: #ff0000;
   --radius: 18px;
   --shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-  --font: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --font: "Mojangels Mini", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Mojangels Big", "Mojangels Mini", "Segoe UI", sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -25,6 +41,12 @@ body {
   color: var(--text);
   line-height: 1.55;
   overflow-x: hidden;
+  -webkit-font-smoothing: none;
+}
+
+h1, h2, h3, .brand {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
 }
 
 body::before {
@@ -265,9 +287,8 @@ a { color: inherit; }
 
 h1 {
   margin: 16px 0 12px;
-  font-size: clamp(2.4rem, 5vw, 4.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
+  font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+  line-height: 1.18;
 }
 
 h1 span { color: #8ec4ff; }
@@ -424,8 +445,7 @@ h1 span { color: #8ec4ff; }
 .section { padding: 72px 0; }
 .section h2 {
   margin: 0 0 10px;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  letter-spacing: -0.04em;
+  font-size: clamp(1.55rem, 2.8vw, 2.2rem);
 }
 #mods h2 { margin-bottom: 32px; }
 .section .sub { color: var(--muted); margin: 0 0 32px; max-width: 640px; }
@@ -750,86 +770,53 @@ footer {
   .cube { width: min(200px, 58vw); }
 }
 
-html.captcha-lock,
-html.captcha-lock body {
-  overflow: hidden;
-}
-html.captcha-lock body::after {
-  content: "";
+.cookie-banner {
+  display: none;
   position: fixed;
-  inset: 0;
-  z-index: 90;
-  background: rgba(7, 7, 10, 0.72);
-}
-.captcha-gate {
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  display: flex;
+  z-index: 80;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  width: min(720px, calc(100% - 32px));
+  margin: 0 auto;
   align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(7, 7, 10, 0.55);
-}
-.captcha-card {
-  width: min(420px, 100%);
-  padding: 28px 24px 24px;
-  border-radius: var(--radius);
-  background: var(--surface);
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(18, 18, 20, 0.96);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
 }
-.captcha-kicker {
-  margin: 0 0 8px;
-  color: var(--accent);
-  font-size: .78rem;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+html.cookie-pending .cookie-banner { display: flex; }
+.cookie-banner img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
 }
-.captcha-card h2 {
-  margin: 0 0 8px;
-  font-size: 1.35rem;
-  line-height: 1.25;
-}
-.captcha-card p {
-  margin: 0 0 18px;
-  color: var(--muted);
-  font-size: .95rem;
-}
-.captcha-widget {
-  min-height: 78px;
-  display: flex;
-  justify-content: flex-start;
-}
-.captcha-status {
+.cookie-banner p {
   margin: 0;
-  font-size: .85rem;
-  color: var(--faint);
+  flex: 1;
+  color: var(--muted);
+  font-size: .92rem;
 }
-.human-check {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  min-height: 74px;
-  padding: 12px 16px;
-  border-radius: 4px;
-  background: #222;
-  border: 1px solid #3c4043;
-  cursor: pointer;
-  user-select: none;
+.cookie-link {
+  color: #8ec4ff;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-.human-check input {
-  width: 24px;
-  height: 24px;
-  accent-color: var(--accent);
-  cursor: pointer;
+.cookie-link:hover { color: var(--text); }
+.policy-page p {
+  max-width: 720px;
+  color: var(--muted);
 }
-.human-check span {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
+@media (max-width: 640px) {
+  .cookie-banner {
+    flex-wrap: wrap;
+  }
+  .cookie-banner .btn { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

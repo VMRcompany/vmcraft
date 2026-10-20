@@ -110,7 +110,25 @@ const I18N = {
     peAllVersions: "Все версии VMcraftPE",
     peVerTitle: "Версии VMcraftPE",
     peVerSub: "Скачайте текущую или любую предыдущую сборку игры.",
-    peLegal: "VMcraftPE — независимый проект VMRcompany. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB."
+    peLegal: "VMcraftPE — независимый проект VMRcompany. Он не связан с Mojang, Microsoft и Minecraft. Minecraft является товарным знаком Mojang Synergies AB.",
+    navPrivacy: "Конфиденциальность",
+    cookieText: "Мы используем cookies, чтобы сайт работал удобнее.",
+    cookiePolicy: "Политика конфиденциальности",
+    cookieAccept: "Принять",
+    privacyTitle: "Политика конфиденциальности",
+    privacyUpdated: "Сайт vmcraft.mineholde.pro. Оператор: VMRcompany.",
+    privacyH1: "Какие данные мы обрабатываем",
+    privacyP1: "Сайт статический. Мы не просим имя, почту или пароль. В браузере могут сохраняться язык интерфейса и согласие на cookies.",
+    privacyH2: "Cookies",
+    privacyP2: "Cookies и похожие данные нужны, чтобы запомнить язык, согласие на cookies и работу счётчика посещений. Пока вы не примете cookies, виджет показывается при заходе на сайт.",
+    privacyH3: "Аналитика",
+    privacyP3: "На главной странице может работать Яндекс Метрика. Она собирает обезличенную статистику визитов. Подробности — в политике Яндекса.",
+    privacyH4: "Сторонние сервисы",
+    privacyP4: "Ссылки ведут на GitHub, RuStore, APKPure и YouTube. Их правила обработки данных задают эти сервисы. Хостинг страниц — GitHub Pages.",
+    privacyH5: "Как отказаться",
+    privacyP5: "Можно очистить данные сайта в настройках браузера. Тогда виджет cookies появится снова. Также можно отключить cookies и счётчики в самом браузере.",
+    privacyH6: "Контакты",
+    privacyP6: "По вопросам политики пишите в репозиторий VMRcompany на GitHub."
   },
   en: {
     navFeat: "Features",
@@ -216,7 +234,25 @@ const I18N = {
     peAllVersions: "All VMcraftPE versions",
     peVerTitle: "VMcraftPE versions",
     peVerSub: "Download the current build or any previous game release.",
-    peLegal: "VMcraftPE is an independent VMRcompany project. It is not affiliated with Mojang, Microsoft, or Minecraft. Minecraft is a trademark of Mojang Synergies AB."
+    peLegal: "VMcraftPE is an independent VMRcompany project. It is not affiliated with Mojang, Microsoft, or Minecraft. Minecraft is a trademark of Mojang Synergies AB.",
+    navPrivacy: "Privacy",
+    cookieText: "We use cookies to keep the site working smoothly.",
+    cookiePolicy: "Privacy policy",
+    cookieAccept: "Accept",
+    privacyTitle: "Privacy policy",
+    privacyUpdated: "Site vmcraft.mineholde.pro. Operator: VMRcompany.",
+    privacyH1: "What data we process",
+    privacyP1: "This is a static site. We do not ask for a name, email, or password. The browser may store the interface language and cookie consent.",
+    privacyH2: "Cookies",
+    privacyP2: "Cookies and similar data remember the language, cookie consent, and visit statistics. Until you accept cookies, the widget is shown when you open the site.",
+    privacyH3: "Analytics",
+    privacyP3: "The home page may run Yandex Metrica. It collects anonymized visit stats. See Yandex’s policy for details.",
+    privacyH4: "Third parties",
+    privacyP4: "Links go to GitHub, RuStore, APKPure, and YouTube. Those services set their own data rules. Pages are hosted on GitHub Pages.",
+    privacyH5: "How to opt out",
+    privacyP5: "You can clear this site’s data in browser settings. The cookie widget will show again. You can also disable cookies and trackers in the browser.",
+    privacyH6: "Contact",
+    privacyP6: "For privacy questions, write in the VMRcompany repository on GitHub."
   }
 };
 
@@ -243,6 +279,10 @@ const SEO = {
   "pe-versions": {
     ru: { title: "Скачать VMcraftPE — все версии APK", desc: "Все версии игры VMcraftPE для Android. Скачайте актуальную или предыдущую сборку." },
     en: { title: "Download VMcraftPE — all APK versions", desc: "Every VMcraftPE Android game release. Download the latest or an older APK." }
+  },
+  privacy: {
+    ru: { title: "Политика конфиденциальности — VMcraft", desc: "Политика конфиденциальности сайта VMcraft: cookies, аналитика и обработка данных." },
+    en: { title: "Privacy policy — VMcraft", desc: "VMcraft website privacy policy: cookies, analytics, and data processing." }
   }
 };
 

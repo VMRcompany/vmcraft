@@ -17,16 +17,13 @@
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="images/icon.png" type="image/png">
   <link rel="apple-touch-icon" href="images/icon-round.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261020b">
+  <link rel="stylesheet" href="css/style.css?v=20261020c">
   <script>
     (function () {
       try {
-        if (sessionStorage.getItem("vmcraft-captcha-ok")) return;
-        if (/bot|crawl|spider|slurp|mediapartners|yandex|googlebot|bingbot|baidu/i.test(navigator.userAgent)) return;
-        document.documentElement.classList.add("captcha-lock");
+        if (!localStorage.getItem("vmcraft-cookies-ok")) {
+          document.documentElement.classList.add("cookie-pending");
+        }
       } catch (e) {}
     })();
   </script>
@@ -228,6 +225,7 @@
           <a href="mods.html" data-i18n="navMods">Моды</a>
           <a href="versions.html" data-i18n="navVersions">Версии</a>
           <a href="pe.html" data-i18n="navPe">VMcraftPE</a>
+          <a href="privacy.html" data-i18n="navPrivacy">Конфиденциальность</a>
         </div>
         <div class="store-badges">
           <a href="https://www.rustore.ru/catalog/app/app.vmcraft.pro?utm_source=available_in_rustore&amp;utm_medium=app.vmcraft.pro&amp;rsm=1&amp;mt_link_id=iios36&amp;mt_sub1=app.vmcraft.pro" target="_blank" rel="noopener">
@@ -242,7 +240,15 @@
       <div data-i18n="copy">© VMcraft · VMRcompany</div>
     </div>
   </footer>
-  <script src="js/captcha.js?v=20261020b"></script>
-  <script src="js/app.js?v=20261001d"></script>
+  <aside class="cookie-banner" id="cookieBanner">
+    <img src="images/cookie.jpg" width="56" height="56" alt="">
+    <p>
+      <span data-i18n="cookieText">Мы используем cookies, чтобы сайт работал удобнее.</span>
+      <a class="cookie-link" href="privacy.html" data-i18n="cookiePolicy">Политика конфиденциальности</a>
+    </p>
+    <button type="button" class="btn btn-play" id="cookieAccept" data-i18n="cookieAccept">Принять</button>
+  </aside>
+  <script src="js/app.js?v=20261020c"></script>
+  <script src="js/cookie.js?v=20261020c"></script>
 </body>
 </html>
