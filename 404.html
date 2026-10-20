@@ -6,7 +6,16 @@
   <link rel="canonical" href="https://vmcraft.mineholde.pro/">
   <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css?v=20261008c">
+  <link rel="stylesheet" href="css/style.css?v=20261020b">
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("vmcraft-captcha-ok")) return;
+        if (/bot|crawl|spider|slurp|mediapartners|yandex|googlebot|bingbot|baidu/i.test(navigator.userAgent)) return;
+        document.documentElement.classList.add("captcha-lock");
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body data-page="home">
   <main class="wrap section versions-page">
@@ -19,5 +28,6 @@
       <a class="btn btn-ghost" href="pe.html">VMcraftPE</a>
     </p>
   </main>
+  <script src="js/captcha.js?v=20261020b"></script>
 </body>
 </html>

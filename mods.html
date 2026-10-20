@@ -18,7 +18,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261008c">
+  <link rel="stylesheet" href="css/style.css?v=20261020b">
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("vmcraft-captcha-ok")) return;
+        if (/bot|crawl|spider|slurp|mediapartners|yandex|googlebot|bingbot|baidu/i.test(navigator.userAgent)) return;
+        document.documentElement.classList.add("captcha-lock");
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body data-page="mods">
   <div class="bedrock" aria-hidden="true"></div>
@@ -101,6 +110,7 @@
       <div data-i18n="copy">© VMcraft · VMRcompany</div>
     </div>
   </footer>
+  <script src="js/captcha.js?v=20261020b"></script>
   <script src="js/app.js?v=20261001d"></script>
   <script src="js/mods.js?v=20260920g"></script>
 </body>

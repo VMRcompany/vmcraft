@@ -20,7 +20,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261008c">
+  <link rel="stylesheet" href="css/style.css?v=20261020b">
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("vmcraft-captcha-ok")) return;
+        if (/bot|crawl|spider|slurp|mediapartners|yandex|googlebot|bingbot|baidu/i.test(navigator.userAgent)) return;
+        document.documentElement.classList.add("captcha-lock");
+      } catch (e) {}
+    })();
+  </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"SoftwareApplication","name":"VMcraft","applicationCategory":"GameApplication","operatingSystem":"Android","url":"https://vmcraft.mineholde.pro/","description":"Minecraft: Java Edition launcher for Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
@@ -233,6 +242,7 @@
       <div data-i18n="copy">© VMcraft · VMRcompany</div>
     </div>
   </footer>
+  <script src="js/captcha.js?v=20261020b"></script>
   <script src="js/app.js?v=20261001d"></script>
 </body>
 </html>
