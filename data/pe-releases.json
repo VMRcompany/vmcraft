@@ -1,5 +1,20 @@
 [
   {
+    "tag_name": "v5180009",
+    "name": "0.2.1",
+    "published_at": "2026-11-22T14:58:33Z",
+    "body": "Версия 0.2.1. Экран «Медиафайлы...» при входе в мир больше не разбирает все картинки сразу: текстуры открываются, когда они нужны.",
+    "draft": false,
+    "prerelease": false,
+    "assets": [
+      {
+        "name": "VMcraftPE.apk",
+        "size": 47326441,
+        "browser_download_url": "https://github.com/VMRcompany/VMcraftPE/releases/download/v5180009/VMcraftPE.apk"
+      }
+    ]
+  },
+  {
     "tag_name": "v5180008",
     "name": "0.2.0",
     "published_at": "2026-11-22T14:31:15Z",
