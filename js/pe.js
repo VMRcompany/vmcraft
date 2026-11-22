@@ -1,5 +1,5 @@
 const PE_RELEASES_API = "https://api.github.com/repos/VMRcompany/VMcraftPE/releases";
-const PE_LOCAL_RELEASES_URL = "data/pe-releases.json?v=20261001c";
+const PE_LOCAL_RELEASES_URL = "data/pe-releases.json?v=20261122a";
 
 let peCachedReleases = Array.isArray(window.VMCRAFTPE_RELEASES) ? window.VMCRAFTPE_RELEASES : null;
 

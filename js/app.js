@@ -455,7 +455,7 @@ if (document.querySelector("a[data-apk], [data-version]")) loadLatest();
 const PE_GITHUB_LATEST = "https://api.github.com/repos/VMRcompany/VMcraftPE/releases/latest";
 const PE_FALLBACK = {
   versionName: "0.1.3",
-  apkUrl: "https://github.com/VMRcompany/VMcraftPE/releases/download/v5180003/VMcraftPE.apk"
+  apkUrl: "https://github.com/VMRcompany/VMcraftPE/releases/download/v5180008/VMcraftPE.apk"
 };
 
 async function fromPeGithubRelease() {
