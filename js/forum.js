@@ -5,7 +5,13 @@
 
   var KEY = "vmcraft-forum-v1";
   var SESSION = "vmcraft-forum-session";
+  var STORE_URL = "https://jsonstorage.com/12grtjSO8soo8v";
+  var STORE_KEY = "UJSqPNHNtsSRidmgioLtqJPSapR9qL4a";
+  var DEV_SLUG = "mineholde-apps-official";
   var RESERVED = { mods: 1, login: 1, register: 1, new: 1, channels: 1, topic: 1, forum: 1 };
+  var cache = null;
+  var rev = 0;
+  var remoteOk = false;
 
   function empty() {
     return {
@@ -20,21 +26,92 @@
     };
   }
 
-  function load() {
+  function safeImage(src, limit) {
+    return typeof src === "string" && src.indexOf("data:image/jpeg;base64,") === 0 && src.length < (limit || 12000);
+  }
+
+  function normalize(data) {
+    if (!data || !Array.isArray(data.users)) return empty();
+    data.channels = data.channels && data.channels.length ? data.channels : empty().channels;
+    data.posts = Array.isArray(data.posts) ? data.posts : [];
+    data.mods = Array.isArray(data.mods) ? data.mods : [];
+    data.users.forEach(function (user) {
+      if (user && user.avatar && !safeImage(user.avatar, 9000)) user.avatar = "";
+    });
+    data.posts.forEach(function (post) {
+      if (post && post.image && !safeImage(post.image, 14000)) post.image = "";
+    });
+    return data;
+  }
+
+  function readLocal() {
     try {
-      var data = JSON.parse(localStorage.getItem(KEY) || "null");
-      if (!data || !Array.isArray(data.users)) return empty();
-      data.channels = data.channels && data.channels.length ? data.channels : empty().channels;
-      data.posts = data.posts || [];
-      data.mods = data.mods || [];
-      return data;
+      return normalize(JSON.parse(localStorage.getItem(KEY) || "null"));
     } catch (e) {
       return empty();
     }
   }
 
+  function load() {
+    return cache || readLocal();
+  }
+
+  function fit(data) {
+    function size() { return JSON.stringify(data).length; }
+    var i;
+    for (i = 0; i < data.posts.length && size() > 90000; i++) {
+      if (data.posts[i].image) data.posts[i].image = "";
+    }
+    for (i = 0; i < data.users.length && size() > 90000; i++) {
+      if (data.users[i].slug !== DEV_SLUG && data.users[i].avatar) data.users[i].avatar = "";
+    }
+    return size() <= 98000;
+  }
+
+  function push(data) {
+    var seen = rev;
+    return fetch(STORE_URL, {
+      method: "PUT",
+      cache: "no-store",
+      headers: { "Content-Type": "application/json", Accept: "application/json", "X-Bin-Key": STORE_KEY },
+      body: JSON.stringify(data)
+    }).then(function (res) {
+      if (res.ok && seen === rev) remoteOk = true;
+      return res.ok;
+    }).catch(function () { return false; });
+  }
+
   function save(data) {
-    localStorage.setItem(KEY, JSON.stringify(data));
+    rev++;
+    cache = data;
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+    if (!fit(data)) return Promise.resolve(false);
+    return push(data);
+  }
+
+  function pull() {
+    var seen = rev;
+    return fetch(STORE_URL, { cache: "no-store", headers: { Accept: "application/json" } }).then(function (res) {
+      if (!res.ok) throw new Error("load");
+      return res.json();
+    }).then(function (raw) {
+      if (rev !== seen) return cache;
+      var remote = normalize(raw);
+      var local = readLocal();
+      remoteOk = true;
+      if (!remote.users.length && !remote.posts.length && !remote.mods.length &&
+          (local.users.length || local.posts.length || local.mods.length)) {
+        save(local);
+        return local;
+      }
+      cache = remote;
+      try { localStorage.setItem(KEY, JSON.stringify(remote)); } catch (e) {}
+      return remote;
+    }).catch(function () {
+      remoteOk = false;
+      cache = cache || readLocal();
+      return cache;
+    });
   }
 
   function session() {
@@ -59,6 +136,24 @@
 
   function me(data) {
     return userBy(data, session());
+  }
+
+  function badge(slug) {
+    if (slug !== DEV_SLUG) return "";
+    return '<svg class="fm-check" viewBox="0 0 24 24" role="img" aria-label="Разработчик"><title>Разработчик</title><circle cx="12" cy="12" r="12" fill="#2AABEE"/><path d="M6.8 12.5l3.3 3.3 7.1-7.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function face(user, size) {
+    var px = size || 28;
+    if (user && safeImage(user.avatar, 9000)) {
+      return '<img class="fm-avatar" src="' + user.avatar + '" alt="" width="' + px + '" height="' + px + '">';
+    }
+    var letter = esc(((user && user.nick) || "?").charAt(0));
+    return '<span class="fm-avatar fm-avatar-letter" style="width:' + px + 'px;height:' + px + 'px;font-size:' + Math.round(px * 0.42) + 'px">' + letter + "</span>";
+  }
+
+  function personHtml(user, slug) {
+    return '<span class="fm-user">' + face(user, 22) + "<span>" + esc(user ? user.nick : slug) + badge(slug) + "</span></span>";
   }
 
   function route() {
@@ -114,11 +209,47 @@
     try { return new Date(iso).toLocaleString("ru-RU"); } catch (e) { return ""; }
   }
 
+  function readImage(file, size, cover) {
+    return new Promise(function (resolve) {
+      if (!file || !/^image\//.test(file.type)) { resolve(""); return; }
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d");
+        if (cover) {
+          canvas.width = size;
+          canvas.height = size;
+          var scale = Math.max(size / img.width, size / img.height);
+          var dw = img.width * scale;
+          var dh = img.height * scale;
+          ctx.drawImage(img, (size - dw) / 2, (size - dh) / 2, dw, dh);
+        } else {
+          var fit = Math.min(1, size / Math.max(img.width, img.height));
+          canvas.width = Math.max(1, Math.round(img.width * fit));
+          canvas.height = Math.max(1, Math.round(img.height * fit));
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+        URL.revokeObjectURL(url);
+        var data = canvas.toDataURL("image/jpeg", 0.62);
+        resolve(safeImage(data, cover ? 9000 : 14000) ? data : "");
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); resolve(""); };
+      img.src = url;
+    });
+  }
+
   function shell(data, body) {
     var person = me(data);
     var channels = data.channels.map(function (ch) {
       return '<a href="/forum/?channel=' + encodeURIComponent(ch.slug) + '">' + esc(ch.title) + "</a>";
     }).join("");
+    var account = person
+      ? '<a class="fm-user" href="/forum/' + encodeURIComponent(person.slug) + '/">' + face(person, 28) + "<span>" + esc(person.nick) + badge(person.slug) + '</span></a><button class="fm-btn fm-btn-line" id="fmOut" type="button">Выйти</button>'
+      : '<a class="fm-btn fm-btn-green" href="/forum/login">Войти</a>';
+    var foot = remoteOk
+      ? "Аккаунты и обсуждения хранятся на сервере и открываются с любого устройства."
+      : "Сервер форума сейчас не ответил. Показана копия из этого браузера.";
     root.innerHTML =
       '<header class="fm-top"><div class="fm-top-inner">' +
         '<a class="fm-brand" href="/forum/"><img src="/images/pe/icon.png" alt=""><span>VMcraft forum<small>от MineHolde - Games</small></span></a>' +
@@ -127,13 +258,11 @@
           '<a href="/forum/mods">Моды</a>' +
           '<a href="/forum/channels">Каналы</a>' +
           '<a href="/old-pe/">Старая (альфа) VMcraftPE</a>' +
-          (person
-            ? '<a href="/forum/' + encodeURIComponent(person.slug) + '/">' + esc(person.nick) + '</a><button class="fm-btn fm-btn-line" id="fmOut" type="button">Выйти</button>'
-            : '<a class="fm-btn fm-btn-green" href="/forum/login">Войти</a>') +
+          account +
         "</nav></div></header>" +
       '<div class="fm-wrap fm-layout"><aside class="fm-side"><a href="/forum/new">Новое обсуждение</a>' + channels +
         '<a href="/forum/mods">Каталог модов</a></aside><div class="fm-main">' + body + "</div></div>" +
-      '<footer class="fm-wrap fm-foot">VMcraft forum от MineHolde - Games. Аккаунт, обсуждения и файлы сохраняются в этом браузере.</footer>';
+      '<footer class="fm-wrap fm-foot">VMcraft forum от MineHolde - Games. ' + foot + "</footer>";
     var out = document.getElementById("fmOut");
     if (out) out.addEventListener("click", function () { setSession(""); render(); });
   }
@@ -174,7 +303,7 @@
     var list = roots.map(function (post) {
       var author = userBy(data, post.author);
       return '<div class="fm-row"><div><a href="/forum/' + encodeURIComponent(post.author) + "/" + post.num + '/">' + esc(post.title || "Сообщение") +
-        '</a><div class="fm-meta">' + esc(author ? author.nick : post.author) + " · " + esc(when(post.created)) + "</div></div></div>";
+        '</a><div class="fm-meta">' + personHtml(author, post.author) + " · " + esc(when(post.created)) + "</div></div></div>";
     }).join("") || '<p class="fm-note">Пока нет обсуждений. Заведите первое.</p>';
     shell(data, '<section class="fm-card"><h1>Обсуждения</h1><p class="fm-note">Каналы слева. У каждого сообщения свой адрес.</p>' + list + "</section>");
   }
@@ -190,7 +319,7 @@
       '<input name="title" required placeholder="Заголовок" maxlength="140">' +
       editor("fmBody") +
       '<input name="file" placeholder="Ссылка на файл, если хотите им поделиться">' +
-      '<input name="picture" type="file" accept="image/*">' +
+      '<label class="fm-file">Картинка<input name="picture" type="file" accept="image/*"></label>' +
       '<button class="fm-btn fm-btn-green" type="submit">Опубликовать</button></form></section>');
     bindEditor("fmBody");
     document.getElementById("fmNew").addEventListener("submit", function (event) {
@@ -206,10 +335,10 @@
   }
 
   function publish(data, person, fields, file) {
-    function finish(image) {
-      var fresh = userBy(load(), person.slug);
+    readImage(file, 160, false).then(function (image) {
       var store = load();
-      fresh = userBy(store, person.slug);
+      var fresh = userBy(store, person.slug);
+      if (!fresh) return;
       fresh.nextNum = fresh.nextNum || 1;
       var num = fresh.nextNum++;
       store.posts.push({
@@ -224,14 +353,11 @@
         parent: fields.parent || "",
         created: new Date().toISOString()
       });
-      save(store);
+      save(store).then(function (ok) {
+        if (!ok) alert("Сообщение сохранено в этом браузере, но сервер его не принял.");
+      });
       go("/forum/" + encodeURIComponent(fresh.slug) + "/" + num + "/");
-    }
-    if (file && file.size < 350000 && /^image\//.test(file.type)) {
-      var reader = new FileReader();
-      reader.onload = function () { finish(String(reader.result || "")); };
-      reader.readAsDataURL(file);
-    } else finish("");
+    });
   }
 
   function findPost(data, slug, num) {
@@ -253,15 +379,17 @@
     var replies = data.posts.filter(function (item) { return item.parent === post.author + "/" + post.num; });
     var files = "";
     if (post.file) files += '<p><a href="' + esc(post.file) + '" target="_blank" rel="noopener">Файл</a></p>';
-    if (post.image) files += '<p><img src="' + post.image + '" alt=""></p>';
+    if (safeImage(post.image, 14000)) files += '<p><img src="' + post.image + '" alt=""></p>';
     var replyHtml = replies.map(function (item) {
-      return '<div class="fm-row"><div><a href="/forum/' + encodeURIComponent(item.author) + "/" + item.num + '/">Ответ</a><div class="fm-body">' + md(item.body) + "</div></div></div>";
+      var replyAuthor = userBy(data, item.author);
+      return '<div class="fm-row"><div><a href="/forum/' + encodeURIComponent(item.author) + "/" + item.num + '/">Ответ</a><div class="fm-meta">' +
+        personHtml(replyAuthor, item.author) + '</div><div class="fm-body">' + md(item.body) + "</div></div></div>";
     }).join("");
     var form = me(data)
       ? '<form class="fm-form" id="fmReply"><h2>Ответить</h2>' + editor("fmReplyBody") + '<button class="fm-btn fm-btn-green" type="submit">Отправить</button></form>'
       : '<p><a href="/forum/login">Войдите</a>, чтобы ответить.</p>';
     shell(data, '<article class="fm-card"><h1>' + esc(post.title || "Сообщение") + "</h1>" +
-      '<p class="fm-meta"><a href="/forum/' + encodeURIComponent(post.author) + '/">' + esc(author ? author.nick : post.author) + "</a> · " + esc(when(post.created)) +
+      '<p class="fm-meta"><a href="/forum/' + encodeURIComponent(post.author) + '/">' + personHtml(author, post.author) + "</a> · " + esc(when(post.created)) +
       "<br>Ссылка: /forum/" + esc(post.author) + "/" + esc(post.num) + "/</p>" +
       '<div class="fm-body">' + md(post.body) + "</div>" + files + "</article>" +
       '<section class="fm-card"><h2>Ответы</h2>' + (replyHtml || '<p class="fm-note">Ответов пока нет.</p>') + form + "</section>");
@@ -287,12 +415,27 @@
       var on = (viewer.following || []).indexOf(person.slug) !== -1;
       follow = '<button class="fm-btn fm-btn-green" id="fmFollow" type="button">' + (on ? "Отписаться" : "Подписаться") + "</button>";
     }
-    shell(data, '<section class="fm-card"><h1>' + esc(person.nick) + "</h1>" +
+    var avatarForm = viewer && viewer.slug === person.slug
+      ? '<form id="fmAvatar"><label class="fm-btn fm-btn-line">Сменить аватарку<input name="avatar" type="file" accept="image/*" hidden></label></form>'
+      : "";
+    shell(data, '<section class="fm-card"><div class="fm-profile">' + face(person, 72) + "<div><h1>" + esc(person.nick) + badge(person.slug) + "</h1>" +
       '<p class="fm-meta">Адрес: /forum/' + esc(person.slug) + "/ · подписчики " + (person.followers || []).length + " · подписки " + (person.following || []).length + "</p>" +
-      "<p>" + esc(person.about || "") + "</p>" + follow + "</section>" +
+      "<p>" + esc(person.about || "") + "</p>" + avatarForm + follow + "</div></div></section>" +
       '<section class="fm-card"><h2>Сообщения</h2>' + (posts.map(function (post) {
         return '<div class="fm-row"><a href="/forum/' + encodeURIComponent(post.author) + "/" + post.num + '/">' + esc(post.title || "Сообщение") + "</a></div>";
       }).join("") || '<p class="fm-note">Пока пусто.</p>') + "</section>");
+    var avatarInput = document.querySelector("#fmAvatar input");
+    if (avatarInput) avatarInput.addEventListener("change", function () {
+      readImage(avatarInput.files[0], 64, true).then(function (image) {
+        if (!image) return;
+        var store = load();
+        var self = userBy(store, slug);
+        if (!self) return;
+        self.avatar = image;
+        save(store);
+        render();
+      });
+    });
     var button = document.getElementById("fmFollow");
     if (button) button.addEventListener("click", function () {
       var store = load();
@@ -319,8 +462,9 @@
     document.title = key + " — VMcraft forum";
     var posts = data.posts.filter(function (post) { return post.topic === key; });
     var list = posts.map(function (post) {
+      var writer = userBy(data, post.author);
       return '<div class="fm-row"><div><a href="/forum/' + encodeURIComponent(post.author) + "/" + post.num + '/">' + esc(post.title || "Отзыв") +
-        '</a><div class="fm-body">' + md(post.body) + "</div></div></div>";
+        '</a><div class="fm-meta">' + personHtml(writer, post.author) + '</div><div class="fm-body">' + md(post.body) + "</div></div></div>";
     }).join("") || '<p class="fm-note">Отзывов пока нет. Напишите первый — он получит свой адрес.</p>';
     var form = me(data)
       ? '<form class="fm-form" id="fmTopic"><input name="title" required placeholder="Заголовок отзыва" maxlength="140">' + editor("fmTopicBody") +
@@ -409,7 +553,8 @@
       var form = event.target;
       var store = load();
       var person = userBy(store, form.slug.value.trim().toLowerCase());
-      hashPass(person && person.salt, form.password.value).then(function (hash) {
+      var algo = person && person.hashAlgo === "pbkdf2" ? "pbkdf2" : "sha256";
+      hashPass(person && person.salt, form.password.value, algo).then(function (hash) {
         if (!person || hash !== person.hash) {
           alert("Ник или пароль не подошли.");
           return;
@@ -426,6 +571,7 @@
       '<input name="slug" required placeholder="Адрес: латиница, цифры, _ -" pattern="[a-z0-9][a-z0-9_-]{2,31}">' +
       '<input name="password" required type="password" minlength="6" placeholder="Пароль, от 6 знаков">' +
       '<textarea name="about" placeholder="Коротко о себе"></textarea>' +
+      '<label class="fm-file">Аватарка<input name="avatar" type="file" accept="image/*"></label>' +
       '<button class="fm-btn fm-btn-green" type="submit">Создать аккаунт</button></form></section>');
     document.getElementById("fmReg").addEventListener("submit", function (event) {
       event.preventDefault();
@@ -437,32 +583,56 @@
         return;
       }
       var salt = Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
-      hashPass(salt, form.password.value).then(function (hash) {
-        store.users.push({
+      Promise.all([
+        hashPass(salt, form.password.value, "pbkdf2"),
+        readImage(form.avatar.files[0], 64, true)
+      ]).then(function (ready) {
+        var fresh = load();
+        if (RESERVED[slug] || userBy(fresh, slug)) {
+          alert("Этот адрес уже занят.");
+          return;
+        }
+        fresh.users.push({
           slug: slug,
           nick: form.nick.value.trim(),
           about: form.about.value.trim(),
+          avatar: ready[1] || "",
           salt: salt,
-          hash: hash,
+          hash: ready[0],
+          hashAlgo: "pbkdf2",
           followers: [],
           following: [],
           nextNum: 1,
           created: new Date().toISOString()
         });
-        save(store);
+        save(fresh).then(function (ok) {
+          if (!ok) alert("Аккаунт создан в этом браузере, но сервер его не принял. Проверьте интернет и откройте форум ещё раз.");
+        });
         setSession(slug);
         go("/forum/" + encodeURIComponent(slug) + "/");
       });
     });
   }
 
-  function hashPass(salt, password) {
-    var data = new TextEncoder().encode(String(salt || "") + ":" + String(password || ""));
-    return crypto.subtle.digest("SHA-256", data).then(function (buf) {
-      return Array.prototype.map.call(new Uint8Array(buf), function (n) {
-        return n.toString(16).padStart(2, "0");
-      }).join("");
-    });
+  function hex(buf) {
+    return Array.prototype.map.call(new Uint8Array(buf), function (n) {
+      return n.toString(16).padStart(2, "0");
+    }).join("");
+  }
+
+  function hashPass(salt, password, algo) {
+    var enc = new TextEncoder();
+    if (algo === "pbkdf2") {
+      return crypto.subtle.importKey("raw", enc.encode(String(password || "")), "PBKDF2", false, ["deriveBits"]).then(function (key) {
+        return crypto.subtle.deriveBits({
+          name: "PBKDF2",
+          salt: enc.encode(String(salt || "")),
+          iterations: 120000,
+          hash: "SHA-256"
+        }, key, 256);
+      }).then(hex);
+    }
+    return crypto.subtle.digest("SHA-256", enc.encode(String(salt || "") + ":" + String(password || ""))).then(hex);
   }
 
   function render() {
@@ -490,5 +660,7 @@
     go(url.pathname + url.search);
   });
   window.addEventListener("popstate", render);
+  cache = readLocal();
   render();
+  pull().then(render);
 })();

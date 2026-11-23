@@ -56,6 +56,13 @@ button, input, textarea, select { font: inherit; }
 .fm-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .fm-note { color: var(--muted); font-size: 0.92rem; }
 .fm-foot { color: var(--muted); padding: 8px 0 28px; font-size: 0.9rem; }
+.fm-user { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.fm-avatar { border-radius: 50%; object-fit: cover; display: inline-block; flex: 0 0 auto; background: #d7e0e8; }
+.fm-avatar-letter { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: #d7e0e8; font-weight: 800; line-height: 1; flex: 0 0 auto; }
+.fm-check { width: 16px; height: 16px; margin-left: 4px; vertical-align: -3px; flex: 0 0 auto; }
+.fm-profile { display: flex; gap: 14px; align-items: center; }
+.fm-profile h1 { display: flex; align-items: center; }
+.fm-file { display: grid; gap: 6px; color: var(--muted); font-size: 0.92rem; }
 
 @media (max-width: 800px) {
   .fm-layout { grid-template-columns: minmax(0, 1fr); }
