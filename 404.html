@@ -18,6 +18,20 @@
   </script>
 </head>
 <body data-page="home">
+  <script>
+    (function () {
+      var path = location.pathname;
+      if (path === "/old-pe" || path.indexOf("/old-pe/") === 0) {
+        document.documentElement.classList.add("oldpe-boot");
+      }
+    })();
+  </script>
+  <style>
+    html.oldpe-boot body > main,
+    html.oldpe-boot .cookie-banner { display: none; }
+    html.oldpe-boot body { margin: 0; background: #fff; }
+  </style>
+  <div id="oldpe"></div>
   <main class="wrap section versions-page">
     <h1>404</h1>
     <p class="sub">Такой страницы нет. Перейдите на сайт VMcraft.</p>
@@ -37,5 +51,16 @@
     <button type="button" class="btn btn-play" id="cookieAccept" data-i18n="cookieAccept">Принять</button>
   </aside>
   <script src="js/cookie.js?v=20261020c"></script>
+  <script>
+    if (document.documentElement.classList.contains("oldpe-boot")) {
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "/css/old-pe.css?v=20261123a";
+      document.head.appendChild(link);
+      var script = document.createElement("script");
+      script.src = "/js/old-pe.js?v=20261123a";
+      document.body.appendChild(script);
+    }
+  </script>
 </body>
 </html>
