@@ -239,7 +239,7 @@
   function loadCatalog() {
     if (catalog) return Promise.resolve(catalog);
     if (catalogWait) return catalogWait;
-    catalogWait = fetch(API + "/api/packages/?type=mod&type=game&type=txp").then(function (res) {
+    catalogWait = fetch(API + "/api/packages/?type=mod&type=game&type=txp&sort=score&order=desc").then(function (res) {
       if (!res.ok) throw new Error("catalog");
       return res.json();
     }).then(function (data) {
@@ -283,11 +283,12 @@
         if (!needle) return true;
         return (item.title + " " + item.author + " " + (item.short_description || "") + " " + item.name).toLowerCase().indexOf(needle) !== -1;
       });
-      filtered.sort(function (a, b) {
-        if (sort === "title") return String(a.title || "").localeCompare(String(b.title || ""), "ru");
-        if (sort === "downloads") return (b.downloads || 0) - (a.downloads || 0);
-        return (b.score || 0) - (a.score || 0);
-      });
+      if (sort === "title" || sort === "downloads") {
+        filtered.sort(function (a, b) {
+          if (sort === "title") return String(a.title || "").localeCompare(String(b.title || ""), "ru");
+          return (b.downloads || 0) - (a.downloads || 0);
+        });
+      }
       var per = 24;
       var pages = Math.max(1, Math.ceil(filtered.length / per));
       page = Math.min(page, pages);
@@ -341,23 +342,40 @@
       if (pkg.media_license) side += "<p>Лицензия медиа: " + esc(pkg.media_license) + "</p>";
       if (pkg.score != null) side += "<p>Оценка: " + esc(pkg.score) + "</p>";
       if (pkg.downloads != null) side += "<p>Скачиваний: " + esc(pkg.downloads) + "</p>";
-      if (Array.isArray(pkg.tags) && pkg.tags.length) side += "<p>Метки: " + esc(pkg.tags.join(", ")) + "</p>";
+      if (Array.isArray(pkg.tags) && pkg.tags.length) {
+        var tagNames = pkg.tags.map(function (tag) { return typeof tag === "string" ? tag : (tag.title || tag.name || tag.label || ""); }).filter(Boolean);
+        if (tagNames.length) side += "<p>Метки: " + esc(tagNames.join(", ")) + "</p>";
+      }
       side += '<a class="op-btn op-btn-green" href="' + esc(download) + '">Скачать пакет</a>';
       [["Сайт", pkg.website], ["Исходный код", pkg.repo], ["Задачи", pkg.issue_tracker], ["Форум", pkg.forum_url], ["Поддержать", pkg.donate_url]].forEach(function (link) {
         if (link[1]) side += '<a class="op-btn op-btn-ghost" href="' + esc(link[1]) + '" target="_blank" rel="noopener">' + link[0] + "</a>";
       });
-      var depHtml = "";
       var depList = [];
       if (Array.isArray(deps)) depList = deps;
       else if (deps && Array.isArray(deps.dependencies)) depList = deps.dependencies;
+      else if (deps && typeof deps === "object") {
+        Object.keys(deps).forEach(function (key) {
+          if (Array.isArray(deps[key])) depList = depList.concat(deps[key]);
+        });
+      }
+      var depHtml = "";
       if (depList.length) {
         depHtml = "<h3>Зависимости</h3><ul>" + depList.map(function (dep) {
-          var label = dep.name || dep.dep || dep.mod || dep.package || "";
-          var target = dep.packages && dep.packages[0];
-          if (target && target.author && target.name) {
-            return '<li><a href="/old-pe/' + encodeURIComponent(target.author) + "/" + encodeURIComponent(target.name) + '/">' + esc(label || (target.author + "/" + target.name)) + "</a></li>";
+          var label = dep.name || "";
+          var options = dep.packages || [];
+          var chosen = "";
+          options.forEach(function (item) {
+            var text = typeof item === "string" ? item : ((item && item.author && item.name) ? item.author + "/" + item.name : "");
+            if (!text) return;
+            var technical = text.split("/").pop();
+            if (!chosen || technical === label) chosen = text;
+          });
+          var extra = dep.is_optional ? " (необязательно)" : "";
+          if (chosen.indexOf("/") > 0) {
+            var bits = chosen.split("/");
+            return '<li><a href="/old-pe/' + encodeURIComponent(bits[0]) + "/" + encodeURIComponent(bits.slice(1).join("/")) + '/">' + esc(label || chosen) + "</a>" + extra + "</li>";
           }
-          return "<li>" + esc(label) + (dep.is_optional ? " (необязательно)" : "") + "</li>";
+          return "<li>" + esc(label) + extra + "</li>";
         }).join("") + "</ul>";
       }
       var reviewHtml = reviews.length ? "<h3>Отзывы</h3>" + reviews.map(function (review) {
