@@ -24,14 +24,20 @@
       if (path === "/old-pe" || path.indexOf("/old-pe/") === 0) {
         document.documentElement.classList.add("oldpe-boot");
       }
+      if (path === "/forum" || path.indexOf("/forum/") === 0) {
+        document.documentElement.classList.add("forum-boot");
+      }
     })();
   </script>
   <style>
     html.oldpe-boot body > main,
-    html.oldpe-boot .cookie-banner { display: none; }
-    html.oldpe-boot body { margin: 0; background: #fff; }
+    html.oldpe-boot .cookie-banner,
+    html.forum-boot body > main,
+    html.forum-boot .cookie-banner { display: none; }
+    html.oldpe-boot body, html.forum-boot body { margin: 0; background: #fff; }
   </style>
   <div id="oldpe"></div>
+  <div id="forum"></div>
   <main class="wrap section versions-page">
     <h1>404</h1>
     <p class="sub">Такой страницы нет. Перейдите на сайт VMcraft.</p>
@@ -55,11 +61,20 @@
     if (document.documentElement.classList.contains("oldpe-boot")) {
       var link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = "/css/old-pe.css?v=20261123a";
+      link.href = "/css/old-pe.css?v=20261123c";
       document.head.appendChild(link);
       var script = document.createElement("script");
-      script.src = "/js/old-pe.js?v=20261123a";
+      script.src = "/js/old-pe.js?v=20261123c";
       document.body.appendChild(script);
+    }
+    if (document.documentElement.classList.contains("forum-boot")) {
+      var forumCss = document.createElement("link");
+      forumCss.rel = "stylesheet";
+      forumCss.href = "/css/forum.css?v=20261123c";
+      document.head.appendChild(forumCss);
+      var forumJs = document.createElement("script");
+      forumJs.src = "/js/forum.js?v=20261123c";
+      document.body.appendChild(forumJs);
     }
   </script>
 </body>

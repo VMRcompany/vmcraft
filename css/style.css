@@ -195,7 +195,7 @@ a { color: inherit; }
 .brand img {
   width: 42px;
   height: 42px;
-  border-radius: 12px;
+  border-radius: 1mm;
   box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 10px 24px rgba(0,0,0,.4);
 }
 

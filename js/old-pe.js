@@ -21,6 +21,16 @@
     ["pause.jpg", "Меню внутри мира", "Кнопка меню открывает чат, инвентарь, «Бросить» и «Выйти». Дальше режимы полёта, быстрого хода и прохода сквозь стены, отладка, смена камеры, лимит видимости, миникарта и журнал чата."]
   ];
 
+  function sharpUrl(url) {
+    return String(url || "").replace(/\/thumbnails\/[123]\//, "/thumbnails/3/");
+  }
+
+  function fullUrl(url) {
+    var value = String(url || "");
+    if (value.indexOf("/thumbnails/") !== -1) return value.replace(/\/thumbnails\/\d+\//, "/uploads/");
+    return value;
+  }
+
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (ch) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
@@ -113,18 +123,18 @@
     ];
     root.innerHTML =
       '<header class="op-nav"><div class="op-nav-inner">' +
-        '<a class="op-brand" href="/old-pe/"><img src="/images/pe/icon.png" alt="">Старая (альфа) PE</a>' +
+        '<a class="op-brand" href="/old-pe/"><img src="/images/pe/icon.png" alt=""><span>Старая (альфа) VMcraftPE</span></a>' +
         '<button class="op-burger" type="button" aria-label="Меню"><span></span><span></span><span></span></button>' +
         '<nav class="op-links">' + links.map(function (item) {
           return '<a href="' + item[0] + '"' + (item[2] === current ? ' class="is-current"' : "") + ">" + item[1] + "</a>";
         }).join("") +
         '<a href="/pe.html">VMcraftPE</a></nav>' +
-        '<div class="op-nav-end"><a class="op-btn op-btn-green" href="/old-pe/download-versions/">Скачать</a></div>' +
+        '<div class="op-nav-end"><a class="op-btn op-btn-ghost" href="/forum/">Форум</a><a class="op-btn op-btn-green" href="/old-pe/download-versions/">Скачать</a></div>' +
       "</div></header>" +
       '<main>' + body + "</main>" +
       '<footer class="op-foot"><div class="op-wrap">' +
-        '<p><a href="/old-pe/">Старая (альфа) PE</a><a href="/old-pe/packages/">Магазин</a><a href="/old-pe/download-versions/">Версии</a><a href="/pe.html">VMcraftPE</a><a href="/privacy.html">Конфиденциальность</a></p>' +
-        "<p>Старая (альфа) PE — страница VMcraftPE от VMRcompany. Каталог читает публичный API ContentDB и показывает настоящие пакеты. Это не официальный сайт Luanti и не связано с Mojang, Microsoft и Minecraft.</p>" +
+        '<p><a href="/old-pe/">Старая (альфа) VMcraftPE</a><a href="/old-pe/packages/">Магазин</a><a href="/forum/">Форум</a><a href="/old-pe/download-versions/">Версии</a><a href="/pe.html">VMcraftPE</a><a href="/privacy.html">Конфиденциальность</a></p>' +
+        "<p>Старая (альфа) VMcraftPE — страница VMcraftPE от VMRcompany. Каталог читает публичный API ContentDB и показывает настоящие пакеты. Это не официальный сайт Luanti и не связано с Mojang, Microsoft и Minecraft.</p>" +
       "</div></footer>" +
       '<aside class="op-cookie" id="cookieBanner"><p>Мы используем cookies, чтобы сайт работал удобнее. <a href="/privacy.html">Политика конфиденциальности</a></p><button class="op-btn op-btn-green" id="cookieAccept" type="button">Принять</button></aside>';
     var burger = root.querySelector(".op-burger");
@@ -157,10 +167,10 @@
   }
 
   function renderHome() {
-    document.title = "Старая (альфа) PE — VMcraftPE";
+    document.title = "Старая (альфа) VMcraftPE — VMcraftPE";
     shell("home",
       '<section class="op-hero"><div class="op-wrap">' +
-        "<h1>Старая (альфа) PE</h1>" +
+        "<h1>Старая (альфа) VMcraftPE</h1>" +
         '<i class="op-kicker">VMcraftPE для Android</i>' +
         '<p class="op-lead">Воксельная песочница MineHolde на телефоне: свои миры, серверы, настройки и каталог игр, модов и текстур. Ниже — реальные кадры с телефона и тот же каталог, что открывается в игре.</p>' +
         '<div class="op-actions"><a class="op-btn op-btn-blue" href="/old-pe/#features">Узнать больше</a><a class="op-btn op-btn-green" href="/old-pe/download-versions/">Скачать</a></div>' +
@@ -209,7 +219,7 @@
   }
 
   function renderDownloads() {
-    document.title = "Скачать — Старая (альфа) PE";
+    document.title = "Скачать — Старая (альфа) VMcraftPE";
     shell("downloads", '<section class="op-section"><div class="op-wrap"><h2>Скачать VMcraftPE</h2><p class="op-status" id="opDl">Загрузка списка версий…</p></div></section>');
     Promise.all([
       fetch("https://api.github.com/repos/VMRcompany/VMcraftPE/releases?per_page=100").then(function (res) { return res.ok ? res.json() : []; }).catch(function () { return []; }),
@@ -239,18 +249,29 @@
   function loadCatalog() {
     if (catalog) return Promise.resolve(catalog);
     if (catalogWait) return catalogWait;
+    try {
+      var cached = sessionStorage.getItem("vmpe-cdb-v1");
+      if (cached) {
+        var parsed = JSON.parse(cached);
+        if (parsed && Array.isArray(parsed.items) && Date.now() - parsed.at < 6 * 60 * 60 * 1000) {
+          catalog = parsed.items;
+          return Promise.resolve(catalog);
+        }
+      }
+    } catch (e) {}
     catalogWait = fetch(API + "/api/packages/?type=mod&type=game&type=txp&sort=score&order=desc").then(function (res) {
       if (!res.ok) throw new Error("catalog");
       return res.json();
     }).then(function (data) {
       catalog = Array.isArray(data) ? data : [];
+      try { sessionStorage.setItem("vmpe-cdb-v1", JSON.stringify({ at: Date.now(), items: catalog })); } catch (e) {}
       return catalog;
     });
     return catalogWait;
   }
 
   function renderStore() {
-    document.title = "Магазин — Старая (альфа) PE";
+    document.title = "Магазин — Старая (альфа) VMcraftPE";
     var params = query();
     var type = params.get("type") || "";
     var q = params.get("q") || "";
@@ -297,7 +318,9 @@
       if (!slice.length) html += '<p class="op-status">Ничего не нашлось.</p>';
       html += '<div class="op-grid">' + slice.map(function (item) {
         var href = "/old-pe/" + encodeURIComponent(item.author) + "/" + encodeURIComponent(item.name) + "/";
-        var thumb = item.thumbnail ? '<img src="' + esc(item.thumbnail) + '" alt="">' : '<img alt="">';
+        var thumb = item.thumbnail
+          ? '<img src="' + esc(sharpUrl(item.thumbnail)) + '" data-fallback="' + esc(item.thumbnail) + '" alt="" loading="lazy" decoding="async" onerror="if(this.dataset.fallback){this.src=this.dataset.fallback;this.removeAttribute(\'data-fallback\')}">'
+          : '<img alt="">';
         return '<a class="op-card" href="' + href + '">' + thumb + "<div><span class=\"op-type\">" + esc(typeLabel(item.type)) + "</span><h3>" + esc(item.title || item.name) + "</h3><p>" + esc(item.short_description || "") + '</p><p class="op-meta">' + esc(item.author) + "</p></div></a>";
       }).join("") + "</div>";
       function pageHref(n) {
@@ -323,7 +346,7 @@
   }
 
   function renderPackage(author, name) {
-    document.title = author + "/" + name + " — Старая (альфа) PE";
+    document.title = author + "/" + name + " — Старая (альфа) VMcraftPE";
     shell("store", '<section class="op-section"><div class="op-wrap"><p class="op-status">Загрузка пакета…</p></div></section>');
     Promise.all([
       fetch(packageUrl(author, name) + "/").then(function (res) { if (!res.ok) throw new Error("missing"); return res.json(); }),
@@ -347,6 +370,7 @@
         if (tagNames.length) side += "<p>Метки: " + esc(tagNames.join(", ")) + "</p>";
       }
       side += '<a class="op-btn op-btn-green" href="' + esc(download) + '">Скачать пакет</a>';
+      side += '<a class="op-btn op-btn-ghost" href="/forum/topic/' + encodeURIComponent(pkg.author || author) + "/" + encodeURIComponent(pkg.name || name) + '/">Форум</a>';
       [["Сайт", pkg.website], ["Исходный код", pkg.repo], ["Задачи", pkg.issue_tracker], ["Форум", pkg.forum_url], ["Поддержать", pkg.donate_url]].forEach(function (link) {
         if (link[1]) side += '<a class="op-btn op-btn-ghost" href="' + esc(link[1]) + '" target="_blank" rel="noopener">' + link[0] + "</a>";
       });
@@ -383,12 +407,13 @@
         var mark = review.rating === 5 ? "за" : review.rating === 1 ? "против" : "нейтрально";
         return '<article class="op-review"><strong>' + esc(review.title || mark) + "</strong><p class=\"op-meta\">" + esc(who) + " · " + esc(mark) + "</p><p>" + esc(review.comment || "") + "</p></article>";
       }).join("") : "";
-      document.title = (pkg.title || name) + " — Старая (альфа) PE";
+      document.title = (pkg.title || name) + " — Старая (альфа) VMcraftPE";
       shell("store",
         '<section class="op-section"><div class="op-wrap"><p class="op-meta"><a href="/old-pe/packages/">Магазин</a> / ' + esc(pkg.author || author) + " / " + esc(pkg.name || name) + "</p>" +
         '<div class="op-package"><div><div class="op-shots">' + screens.map(function (shot) {
           var url = shot.url || shot;
-          return '<img src="' + esc(url) + '" alt="' + esc(shot.title || pkg.title || "") + '" data-full="' + esc(url) + '">';
+          var big = fullUrl(url);
+        return '<img src="' + esc(big) + '" alt="' + esc(shot.title || pkg.title || "") + '" data-full="' + esc(big) + '" loading="lazy" decoding="async">';
         }).join("") + '</div><div class="op-md">' + md(pkg.long_description || pkg.short_description || "") + "</div>" + depHtml + reviewHtml + "</div><aside class=\"op-side\">" + side + "</aside></div></div></section>"
       );
       root.querySelectorAll(".op-shots img").forEach(function (img) {
